@@ -45,6 +45,19 @@
   .cat p{font-size:14.5px;color:var(--ink-2);margin:10px 0 0}
   .bdg{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
   .b-ap{background:var(--accent-soft);color:var(--accent-2)}.b-rv{background:var(--amber-soft);color:var(--amber)}.b-no{background:var(--red-soft);color:var(--red)}
+  /* expandable landscape cards */
+  .cat[data-exp]{cursor:pointer}
+  .cat[data-exp]:hover{border-color:var(--accent);box-shadow:0 6px 22px rgba(0,0,0,.06)}
+  .cat[data-exp]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .cat-more{max-height:0;overflow:hidden;transition:max-height .35s var(--ease),opacity .25s var(--ease);opacity:0}
+  .cat[aria-expanded="true"] .cat-more{max-height:1400px;opacity:1;margin-top:4px}
+  .cm-block{border-top:1px solid var(--line);padding-top:13px;margin-top:13px}
+  .cm-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-2);background:var(--accent-soft);padding:3px 9px;border-radius:20px;margin-bottom:7px}
+  .cm-block p{font-size:14px;color:var(--ink-2);margin:0;line-height:1.6}
+  .cat-toggle{display:inline-flex;align-items:center;gap:5px;margin-top:12px;background:none;border:none;padding:0;font-size:13px;font-weight:700;color:var(--accent-2);cursor:pointer;font-family:inherit}
+  .cat-toggle .chev{display:inline-block;font-size:17px;line-height:1;transition:transform .3s var(--ease)}
+  .cat[aria-expanded="true"] .cat-toggle .chev{transform:rotate(90deg)}
+  .cat[aria-expanded="true"] .cat-toggle{color:var(--ink-3)}
 
   .reality{background:linear-gradient(180deg,var(--amber-soft),var(--bg-3));border:1px solid #ecdcc0;border-radius:var(--r);padding:24px}
   .reality h2{font-size:24px;margin-bottom:10px}.reality p{font-size:15.5px;color:var(--ink);margin-bottom:12px}.reality p:last-child{margin:0}
@@ -117,17 +130,49 @@
     <h2>The landscape in 60 seconds</h2>
     <p class="lead">The peptides you'll hear about fall into a few buckets. Here's each one in plain terms — with an honest status tag.</p>
 
-    <div class="cat"><div class="cat-top"><div><h3>Metabolic / GLP-1</h3><div class="ex">Semaglutide, Tirzepatide</div></div><span class="bdg b-ap">FDA-approved</span></div>
-      <p>The genuinely proven corner. These reduce appetite and improve blood sugar, with strong human trials. If your goal is fat loss, this is the legitimate, prescribable starting point — not an experimental peptide.</p></div>
+    <div class="cat" data-exp role="button" tabindex="0" aria-expanded="false">
+      <div class="cat-top"><div><h3>Metabolic / GLP-1</h3><div class="ex">Semaglutide, Tirzepatide</div></div><span class="bdg b-ap">FDA-approved</span></div>
+      <p>The genuinely proven corner. These reduce appetite and improve blood sugar, with strong human trials. If your goal is fat loss, this is the legitimate, prescribable starting point — not an experimental peptide.</p>
+      <div class="cat-more">
+        <div class="cm-block"><span class="cm-tag">Why it's trending</span><p>Large, well-run human trials showed substantial, consistent weight loss — the first time a medication delivered results in that range. That evidence, plus visible real-world results, drove the surge in attention. This is the rare case where the hype is mostly backed by data.</p></div>
+        <div class="cm-block"><span class="cm-tag">The honest takeaway</span><p>If fat loss is your goal, this category is the legitimate first conversation — and it's FDA-approved, so a doctor can actually prescribe it rather than you sourcing something gray-market. Results depend heavily on the unglamorous basics alongside it: protein intake, strength training, and sleep. The drug isn't a substitute for those; it works with them.</p></div>
+        <div class="cm-block"><span class="cm-tag">What to ask your doctor</span><p>"Am I a candidate for an approved GLP-1?" · "What side effects should I watch for, and how do we protect muscle while losing fat?" · "Approved product vs. compounded — what are the trade-offs for my situation?"</p></div>
+      </div>
+      <button class="cat-toggle" type="button" aria-hidden="true">Learn more <span class="chev">›</span></button>
+    </div>
 
-    <div class="cat"><div class="cat-top"><div><h3>Growth-hormone peptides</h3><div class="ex">Ipamorelin, CJC-1295, Sermorelin, Tesamorelin</div></div><span class="bdg b-rv">Mostly unapproved</span></div>
-      <p>These nudge your body to release growth hormone, which raises a signal called IGF-1. Popular for muscle and recovery, but human evidence is thin — and the IGF-1 effect is exactly why they need real caution if you have any cancer, thyroid, or growth-disorder history.</p></div>
+    <div class="cat" data-exp role="button" tabindex="0" aria-expanded="false">
+      <div class="cat-top"><div><h3>Growth-hormone peptides</h3><div class="ex">Ipamorelin, CJC-1295, Sermorelin, Tesamorelin</div></div><span class="bdg b-rv">Mostly unapproved</span></div>
+      <p>These nudge your body to release growth hormone, which raises a signal called IGF-1. Popular for muscle and recovery, but human evidence is thin — and the IGF-1 effect is exactly why they need real caution if you have any cancer, thyroid, or growth-disorder history.</p>
+      <div class="cat-more">
+        <div class="cm-block"><span class="cm-tag">Why it's trending</span><p>They promise the things people most want — more muscle, faster recovery, better sleep — while sounding more "natural" than injecting growth hormone directly, because they prompt your own body to release it. Fitness and biohacking communities amplified them heavily. The appeal is real; the human evidence behind the claims mostly isn't there yet.</p></div>
+        <div class="cm-block"><span class="cm-tag">The honest takeaway</span><p>Most of these aren't FDA-approved for the uses they're marketed for, and the quality of what's sold online varies wildly. The bigger issue is the IGF-1 signal they raise: that's a growth signal, which is exactly why anyone with a personal or family history of cancer, thyroid conditions, or eye conditions like thyroid eye disease should treat this category with real caution and not self-experiment.</p></div>
+        <div class="cm-block"><span class="cm-tag">What to ask your doctor</span><p>"Given my health history, is raising IGF-1 a concern for me specifically?" · "Is there an approved option for what I'm actually trying to fix?" · "What would we monitor if I ever considered this?"</p></div>
+      </div>
+      <button class="cat-toggle" type="button" aria-hidden="true">Learn more <span class="chev">›</span></button>
+    </div>
 
-    <div class="cat"><div class="cat-top"><div><h3>Repair / healing peptides</h3><div class="ex">BPC-157, TB-500</div></div><span class="bdg b-no">Research-only</span></div>
-      <p>The big internet favorites for tendons and injuries. The catch: the evidence is almost entirely from animal studies, with essentially no human trials — and they're not currently legal to compound in the U.S.</p></div>
+    <div class="cat" data-exp role="button" tabindex="0" aria-expanded="false">
+      <div class="cat-top"><div><h3>Repair / healing peptides</h3><div class="ex">BPC-157, TB-500</div></div><span class="bdg b-no">Research-only</span></div>
+      <p>The big internet favorites for tendons and injuries. The catch: the evidence is almost entirely from animal studies, with essentially no human trials — and they're not currently legal to compound in the U.S.</p>
+      <div class="cat-more">
+        <div class="cm-block"><span class="cm-tag">Why it's trending</span><p>Anyone dealing with a stubborn tendon or joint injury is highly motivated, and these have a reputation in gym and forum circles as "the thing that finally healed it." Compelling anecdotes spread fast when people are in pain and looking for an answer mainstream medicine hasn't solved quickly.</p></div>
+        <div class="cm-block"><span class="cm-tag">The honest takeaway</span><p>The promising results are almost entirely in rats, not people — that's a real gap, not a technicality. There are essentially no quality human trials, the long-term safety is unknown, and they're not currently legal to compound in the U.S., which means anything you'd buy is unregulated with no guarantee of what's actually in the vial. The injury is real; this is not a proven fix for it.</p></div>
+        <div class="cm-block"><span class="cm-tag">What to ask your doctor</span><p>"What are the evidence-based options for my specific injury?" · "Would physical therapy, imaging, or a specialist referral make sense before anything experimental?"</p></div>
+      </div>
+      <button class="cat-toggle" type="button" aria-hidden="true">Learn more <span class="chev">›</span></button>
+    </div>
 
-    <div class="cat"><div class="cat-top"><div><h3>Skin & longevity / "bioregulators"</h3><div class="ex">GHK-Cu, MOTS-c, Epitalon</div></div><span class="bdg b-no">Mostly unproven</span></div>
-      <p>Marketed for aging and vitality. GHK-Cu has some legitimacy as a topical cosmetic ingredient; the injectable "longevity" peptides are largely research-only with little credible human data.</p></div>
+    <div class="cat" data-exp role="button" tabindex="0" aria-expanded="false">
+      <div class="cat-top"><div><h3>Skin &amp; longevity / "bioregulators"</h3><div class="ex">GHK-Cu, MOTS-c, Epitalon</div></div><span class="bdg b-no">Mostly unproven</span></div>
+      <p>Marketed for aging and vitality. GHK-Cu has some legitimacy as a topical cosmetic ingredient; the injectable "longevity" peptides are largely research-only with little credible human data.</p>
+      <div class="cat-more">
+        <div class="cm-block"><span class="cm-tag">Why it's trending</span><p>"Longevity" and "anti-aging" are powerful, evergreen draws, and these get marketed with science-flavored language that sounds convincing. The longevity space moves fast and rewards bold claims, so unproven compounds can get a lot of buzz well ahead of any real human evidence.</p></div>
+        <div class="cm-block"><span class="cm-tag">The honest takeaway</span><p>It's worth splitting this group. GHK-Cu as a <em>topical</em> skincare ingredient has some legitimate cosmetic backing. The <em>injectable</em> "longevity" peptides — the MOTS-c and Epitalon end — are largely research-only with little credible human data, and the anti-aging promises run far ahead of the evidence. For skin and aging, the boring proven basics (sunscreen, sleep, not smoking, retinoids) still outperform anything in a vial here.</p></div>
+        <div class="cm-block"><span class="cm-tag">What to ask your doctor / dermatologist</span><p>"For my skin goals, what's actually proven?" · "Is there any real evidence behind the injectable 'longevity' peptides, or is this marketing?"</p></div>
+      </div>
+      <button class="cat-toggle" type="button" aria-hidden="true">Learn more <span class="chev">›</span></button>
+    </div>
   </section>
 
   <section class="sec"><div class="reality">
@@ -277,6 +322,24 @@ function generatePDF(){
   doc.save('PeptideDecide-Doctor-Prep.pdf');
 }
 document.getElementById('pdfBtn').onclick=generatePDF;
+
+/* Expandable landscape cards */
+document.querySelectorAll('.cat[data-exp]').forEach(function(card){
+  function toggle(){
+    var open=card.getAttribute('aria-expanded')==='true';
+    card.setAttribute('aria-expanded', String(!open));
+    var btn=card.querySelector('.cat-toggle');
+    if(btn) btn.firstChild.textContent=(open?'Learn more ':'Show less ');
+  }
+  card.addEventListener('click', function(e){
+    /* let real links inside the card behave normally */
+    if(e.target.closest('a')) return;
+    toggle();
+  });
+  card.addEventListener('keydown', function(e){
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }
+  });
+});
 </script>
 </body>
 </html>
