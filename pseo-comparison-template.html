@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ============================================================
+  PROGRAMMATIC META LOGIC
+  meta_title  = "{{peptide_a}} vs {{peptide_b}} for {{use_case}}: Evidence & Legal Status"
+  meta_desc   = "A neutral, clinically-reviewed comparison of {{peptide_a}} and {{peptide_b}} for {{use_case}} — mechanism, evidence grade, safety, and 2026 regulatory status."
+  canonical   = "https://peptidedecide.com/compare/{{slug_a}}-vs-{{slug_b}}"
+============================================================ -->
+<title>BPC-157 vs TB-500 for Tendon &amp; Tissue Repair: Evidence &amp; Legal Status | PeptideDecide</title>
+<meta name="description" content="A neutral, clinically-reviewed comparison of BPC-157 and TB-500 for tendon and tissue repair — mechanism, evidence grade, safety, and 2026 U.S. regulatory status.">
+<link rel="canonical" href="https://peptidedecide.com/compare/bpc-157-vs-tb-500">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+  STRUCTURED DATA (GEO / AI OVERVIEWS) — MedicalWebPage + FAQPage
+  Drives AIO citation eligibility. lastReviewed + reviewedBy are
+  the highest-leverage YMYL signals.
+============================================================ -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"MedicalWebPage",
+  "name":"BPC-157 vs TB-500 for Tendon & Tissue Repair",
+  "url":"https://peptidedecide.com/compare/bpc-157-vs-tb-500",
+  "lastReviewed":"2026-05-20",
+  "reviewedBy":{"@type":"Person","name":"{{reviewer_name}}","honorificSuffix":"MD","jobTitle":"Internal Medicine"},
+  "author":{"@type":"Person","name":"{{author_name}}","url":"https://peptidedecide.com/authors/{{author_slug}}"},
+  "about":[{"@type":"Drug","name":"BPC-157"},{"@type":"Drug","name":"TB-500 (Thymosin Beta-4)"}],
+  "audience":{"@type":"Patient"},
+  "citation":["https://pubmed.ncbi.nlm.nih.gov/{{pmid_1}}","https://pubmed.ncbi.nlm.nih.gov/{{pmid_2}}"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"Is BPC-157 legal in the U.S. in 2026?","acceptedAnswer":{"@type":"Answer","text":"BPC-157 is not FDA-approved. It was placed in FDA Category 2 in 2023 and, while it was removed from that category in 2026 after its nomination was withdrawn, it has not been added to the 503A bulks list and remains under review — it is not currently legal for pharmacy compounding."}},
+    {"@type":"Question","name":"What is the difference between BPC-157 and TB-500?","acceptedAnswer":{"@type":"Answer","text":"Both are studied for tissue repair, primarily in animal models. BPC-157 is a synthetic peptide derived from a gastric protein; TB-500 is a fragment of thymosin beta-4 and also has immune-modulating activity. Neither is FDA-approved and human evidence for both is limited."}},
+    {"@type":"Question","name":"Does either peptide have human clinical trials?","acceptedAnswer":{"@type":"Answer","text":"Credible human trial evidence for both BPC-157 and TB-500 in tendon or tissue repair is essentially absent as of 2026; most published data is preclinical (cell and animal studies)."}}
+  ]
+}
+</script>
+
+<style>
+  :root{--bg:#fff;--bg-2:#f5f5f7;--bg-3:#fbfbfd;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#a1a1a6;--line:#e3e3e6;--line-2:#ededf0;--accent:#0a8a72;--accent-2:#0f6f5c;--accent-soft:#e6f4f0;--amber:#a86711;--amber-soft:#fbf2e2;--red:#b3261e;--red-soft:#fbe9e7;--r:16px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:var(--ink);line-height:1.6;font-size:17px;-webkit-font-smoothing:antialiased;background:var(--bg)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  h1,h2,h3{letter-spacing:-.02em;line-height:1.15;font-weight:700}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--accent-2)}
+
+  header{border-bottom:1px solid var(--line-2);position:sticky;top:0;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);z-index:20}
+  .hb{max-width:760px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px}
+  .hb .mk{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#19b394,#0a7a64)}
+  .hb span{color:var(--ink-3);font-weight:600}
+
+  nav.crumb{font-size:13px;color:var(--ink-2);padding:18px 0 0}
+  nav.crumb a{text-decoration:none}
+  h1{font-size:clamp(28px,5.5vw,40px);margin:14px 0 10px}
+  .dek{font-size:18px;color:var(--ink-2);margin-bottom:20px}
+
+  /* E-E-A-T byline */
+  .byline{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:14px 16px;background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r);font-size:13px;color:var(--ink-2);margin-bottom:8px}
+  .byline b{color:var(--ink)}
+  .byline .rev{display:inline-flex;align-items:center;gap:6px;color:var(--accent-2);font-weight:600}
+  .byline .rev svg{flex:none}
+
+  .disclaimer{font-size:13px;color:var(--ink-2);background:var(--amber-soft);border:1px solid #ecdcc0;border-radius:var(--r);padding:13px 16px;margin:14px 0 30px;display:flex;gap:10px}
+  .disclaimer b{color:var(--ink)}
+
+  h2{font-size:25px;margin:42px 0 6px}
+  h2 + .lead{color:var(--ink-2);margin-bottom:16px}
+  p{margin:0 0 16px}
+
+  /* comparison matrix */
+  .matrix{width:100%;border-collapse:collapse;margin:14px 0 8px;font-size:14.5px}
+  .matrix th,.matrix td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  .matrix thead th{background:var(--bg-2);font-size:13px;border-bottom:2px solid var(--line)}
+  .matrix tbody th{font-weight:600;width:30%;color:var(--ink)}
+  .matrix td{color:var(--ink-2)}
+  .bdg{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.02em}
+  .b-no{background:var(--red-soft);color:var(--red)}.b-rev{background:var(--amber-soft);color:var(--amber)}.b-ap{background:var(--accent-soft);color:var(--accent-2)}
+  @media(max-width:560px){.matrix th,.matrix td{padding:10px 8px;font-size:13px}.matrix tbody th{width:34%}}
+
+  .research{border-left:3px solid var(--accent);padding:4px 0 4px 18px;margin:8px 0 16px}
+  .research p{margin-bottom:10px}
+  .ev-tag{font-size:12px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.04em}
+
+  sup a{font-size:12px;text-decoration:none}
+  .cites{font-size:13px;color:var(--ink-2);border-top:1px solid var(--line-2);margin-top:30px;padding-top:16px}
+  .cites li{margin-bottom:6px}
+
+  /* FAQ accordion */
+  .faq{margin:10px 0}
+  .faq details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--bg-3);overflow:hidden}
+  .faq summary{padding:15px 17px;font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-size:22px;color:var(--accent);font-weight:400;transition:.2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq .a{padding:0 17px 16px;color:var(--ink-2);font-size:15px}
+
+  /* CTA blocks (disclosed, walled) */
+  .cta-wall{margin:40px 0;border:1.5px dashed var(--line);border-radius:18px;padding:6px 18px 20px}
+  .cta-tab{display:inline-block;transform:translateY(-12px);background:var(--amber-soft);color:var(--amber);font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 12px;border-radius:20px}
+  .cta-disc{font-size:12.5px;color:var(--ink-2);margin-bottom:14px}
+  .ctas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px}
+  @media(max-width:640px){.ctas{grid-template-columns:1fr}}
+  .cta{background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:16px;text-align:left}
+  .cta.primary{border-color:var(--accent);background:var(--accent-soft)}
+  .cta h4{font-size:15px;margin-bottom:5px}
+  .cta p{font-size:12.5px;color:var(--ink-2);margin-bottom:12px}
+  .cta a{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:var(--accent);border-radius:30px;padding:9px 15px;text-decoration:none}
+  .cta.primary a{box-shadow:0 4px 12px rgba(10,138,114,.3)}
+
+  .related{margin:34px 0}
+  .related h3{font-size:16px;margin-bottom:10px}
+  .related a{display:inline-block;font-size:13.5px;border:1px solid var(--line);border-radius:30px;padding:7px 14px;margin:0 6px 8px 0;text-decoration:none;color:var(--ink)}
+  footer{border-top:1px solid var(--line-2);padding:26px 20px 40px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
+</style>
+</head>
+<body>
+<header><div class="hb"><span class="mk"></span>Peptide<span>Decide</span></div></header>
+
+<main class="wrap">
+  <nav class="crumb"><a href="/">Home</a> › <a href="/compare">Compare</a> › BPC-157 vs TB-500</nav>
+
+  <!-- H1 LOGIC: "{{peptide_a}} vs {{peptide_b}} for {{use_case}}" -->
+  <h1>BPC-157 vs TB-500 for Tendon &amp; Tissue Repair</h1>
+  <p class="dek">A side-by-side, clinically-reviewed look at mechanism, evidence quality, safety, and current U.S. legal status — written to prepare you for a conversation with your doctor, not to recommend a protocol.</p>
+
+  <div class="byline">
+    <span>By <b>{{author_name}}</b>, {{author_credentials}}</span>
+    <span class="rev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>Medically reviewed by {{reviewer_name}}, MD</span>
+    <span>Last reviewed: <b>May 20, 2026</b></span>
+  </div>
+  <div class="disclaimer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a86711" stroke-width="2" style="flex:none"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/></svg><div><b>Educational only.</b> This page summarizes published literature and regulatory status. It is not medical advice and does not recommend or prescribe any compound. Neither peptide below is FDA-approved.</div></div>
+
+  <!-- ===== AT-A-GLANCE: the extractable answer AIO wants first ===== -->
+  <h2>At a glance</h2>
+  <p>Both BPC-157 and TB-500 are marketed for tendon, ligament, and soft-tissue repair, and both rest almost entirely on animal data — credible human trials are absent for either as of 2026. Neither is FDA-approved, and neither is currently legal for U.S. pharmacy compounding. The most meaningful differences are TB-500's additional immune-modulating activity and each compound's distinct regulatory history.</p>
+
+  <!-- ===== THE MATRIX ===== -->
+  <h2>Side-by-side comparison</h2>
+  <table class="matrix">
+    <thead><tr><th></th><th>BPC-157</th><th>TB-500 (Thymosin β4)</th></tr></thead>
+    <tbody>
+      <tr><th>Compound class</th><td>Synthetic pentadecapeptide (gastric-derived)</td><td>Fragment of thymosin beta-4 protein</td></tr>
+      <tr><th>Primary studied mechanism</th><td>Promotes angiogenesis &amp; fibroblast activity in animal models<sup><a href="#c1">[1]</a></sup></td><td>Actin regulation; cell migration; immune modulation<sup><a href="#c2">[2]</a></sup></td></tr>
+      <tr><th>Evidence grade</th><td><span class="bdg b-no">Preclinical only</span></td><td><span class="bdg b-no">Preclinical only</span></td></tr>
+      <tr><th>Typical delivery</th><td>Subcutaneous / oral (unregulated forms)</td><td>Subcutaneous (unregulated forms)</td></tr>
+      <tr><th>Immune modulation</th><td>Not a primary effect</td><td>Yes — relevant to autoimmune history</td></tr>
+      <tr><th>U.S. regulatory status (2026)</th><td><span class="bdg b-rev">Under FDA review</span> — not approved, not on 503A bulks list</td><td><span class="bdg b-rev">Under FDA review</span> — not approved, not on 503A bulks list</td></tr>
+      <tr><th>Doctor-conversation urgency</th><td>High — no human data, unregulated supply</td><td>High — immune activity + unregulated supply</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== WHAT THE RESEARCH SHOWS (neutral language) ===== -->
+  <h2>What the current research shows</h2>
+  <p class="lead">Objective language only — what the literature demonstrates, and what it does not.</p>
+  <div class="research">
+    <p><span class="ev-tag">BPC-157 · preclinical</span><br>The published clinical literature on BPC-157 indicates a pathway involving angiogenesis and tendon-fibroblast activity in rodent models. It does not establish efficacy or safety in humans; controlled human trials for tissue repair have not been reported.<sup><a href="#c1">[1]</a></sup></p>
+    <p><span class="ev-tag">TB-500 · preclinical</span><br>Research on thymosin beta-4 and its fragment describes a mechanism involving cell migration and tissue remodeling, alongside immune-modulating activity. As with BPC-157, the evidence base is preclinical and does not support claims of treatment or cure in humans.<sup><a href="#c2">[2]</a></sup></p>
+  </div>
+  <p>Because neither compound has human efficacy data and neither is available through regulated pharmacy channels, the central question for a reader is not "which works better" but "what would justify either over an established, evidence-based option" — a question for a licensed clinician.</p>
+
+  <!-- ===== Considerations by context (demographic lenses as SECTIONS, not separate pages) ===== -->
+  <h2>Considerations to raise with your doctor</h2>
+  <p><b>If you have an autoimmune condition or take immunosuppressants:</b> TB-500's immune-modulating activity is the more relevant of the two to flag, and warrants coordination across your specialists.</p>
+  <p><b>If you are over 40 or managing other conditions:</b> the absence of human safety data means interactions and contraindications are largely uncharacterized — bring your full medication list to the conversation.</p>
+
+  <!-- ===== FAQ (PAA / AIO) ===== -->
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details open><summary>Is BPC-157 legal in the U.S. in 2026?</summary><div class="a">BPC-157 is not FDA-approved. It was placed in FDA Category 2 in 2023 and, although removed from that category in 2026 after its nomination was withdrawn, it has not been added to the 503A bulks list and remains under review — it is not currently legal for pharmacy compounding.</div></details>
+    <details><summary>What is the difference between BPC-157 and TB-500?</summary><div class="a">Both are studied for tissue repair, mostly in animals. BPC-157 is a synthetic gastric-derived peptide; TB-500 is a thymosin beta-4 fragment that also modulates immune activity. Neither is FDA-approved and human evidence is limited for both.</div></details>
+    <details><summary>Do either of these have human clinical trials?</summary><div class="a">Credible human trial evidence for tendon or tissue repair is essentially absent for both as of 2026; the published data is preclinical.</div></details>
+  </div>
+
+  <!-- ===== CTA BLOCKS (disclosed + walled) ===== -->
+  <div class="cta-wall">
+    <span class="cta-tab">Next steps · sponsored where noted</span>
+    <p class="cta-disc"><b>Advertising disclosure:</b> the lab and provider links below are paid partnerships; we may earn a commission, and we only partner with licensed, legal services. The PDF export is our own product.</p>
+    <div class="ctas">
+      <div class="cta primary"><h4>Export doctor-ready dossier</h4><p>Turn this comparison into a printable brief with your questions and labs.</p><a href="/dossier">Build my PDF →</a></div>
+      <div class="cta"><h4>Pre-consult blood panel</h4><p>Order the baseline markers a clinician commonly reviews first.</p><a href="#" rel="sponsored nofollow">Order panel →</a></div>
+      <div class="cta"><h4>Match with a licensed provider</h4><p>Connect with a state-licensed clinician working within FDA-approved options.</p><a href="#" rel="sponsored nofollow">Find a provider →</a></div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related comparisons</h3>
+    <a href="/compare/bpc-157-vs-ghk-cu">BPC-157 vs GHK-Cu</a>
+    <a href="/peptides/bpc-157">BPC-157 full profile</a>
+    <a href="/use-case/tissue-repair">Tissue repair: evidence vs. hype</a>
+    <a href="/regulatory/bpc-157-legal-status">Is BPC-157 legal?</a>
+  </div>
+
+  <ol class="cites" id="cites">
+    <li id="c1">[1] {{citation_1_full}} — PubMed: <a href="https://pubmed.ncbi.nlm.nih.gov/{{pmid_1}}">{{pmid_1}}</a></li>
+    <li id="c2">[2] {{citation_2_full}} — PubMed: <a href="https://pubmed.ncbi.nlm.nih.gov/{{pmid_2}}">{{pmid_2}}</a></li>
+  </ol>
+</main>
+
+<footer>PeptideDecide.com · Educational use only — not medical advice, prescribing, or diagnosis.<br>Each page is independently authored and reviewed by a licensed clinician. Regulatory status reflects published FDA guidance as of the review date.<br><a href="privacy-and-disclosures.html">Privacy &amp; Disclosures</a></footer>
+</body>
+</html>
