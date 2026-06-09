@@ -43,7 +43,8 @@
   #progressWrap{height:3px;background:var(--line-2);position:sticky;top:53px;z-index:49;display:none}
   #progressBar{height:100%;width:0;background:var(--accent);border-radius:0 3px 3px 0;transition:width .45s var(--ease)}
 
-  #wizard{padding:8px 0 130px}
+  #wizard{padding:8px 0 0}
+  .step.active:not(#step-welcome){padding-bottom:95px}
   .step{display:none;animation:rise .5s var(--ease) both}
   .step.active{display:block}
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -52,7 +53,7 @@
   .step .lede{font-size:17px;color:var(--ink-2);max-width:540px;margin-bottom:30px}
 
   #step-welcome{text-align:center;padding-top:34px}
-  #step-welcome.active{min-height:calc(100vh - 180px);display:flex;flex-direction:column;justify-content:center;padding-top:0}
+  #step-welcome.active{min-height:calc(100vh - 230px);display:flex;flex-direction:column;justify-content:center;padding-top:10px;padding-bottom:0}
   .hero-mark{width:84px;height:84px;border-radius:23px;margin:0 auto 26px;box-shadow:var(--sh-lg)}
   #step-welcome h1{font-size:clamp(34px,8vw,58px);font-weight:800;margin-bottom:16px;letter-spacing:-.035em}
   #step-welcome h1 .g{background:linear-gradient(120deg,var(--accent),#19b394);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -228,6 +229,7 @@
   body.bon .cnote{display:block;animation:rise .3s var(--ease)}
 
   footer{text-align:center;font-size:12px;color:var(--ink-3);padding:30px 20px 40px;line-height:1.7}footer a{color:var(--accent)}
+  body.nav-on footer{padding-bottom:calc(40px + 75px + env(safe-area-inset-bottom))}
 
   @media(max-width:760px){.res2{grid-template-columns:1fr}}
   @media(max-width:600px){.grid2,.cards,.branchgrid,.pw-grid{grid-template-columns:1fr}.step .lede,#step-welcome .lede{font-size:16px}.paywall{padding:22px}.rsec-h h3{font-size:20px}}
@@ -531,7 +533,7 @@ function enrichFlow(){const f=[];if(relevantSubConditions().length)f.push('step-
 function show(i){document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));const id=flow[i];$(id).classList.add('active');pos=i;window.scrollTo({top:0,behavior:'smooth'});
   const isWelcome=id==='step-welcome',isBranch=id==='step-branch';
   $('progressWrap').style.display=isWelcome?'none':'block';$('progressBar').style.width=((i)/(flow.length-1)*100)+'%';
-  $('nav').style.display=isBranch?'none':'flex';$('back').style.display=i===0?'none':'block';
+  $('nav').style.display=isBranch?'none':'flex';document.body.classList.toggle('nav-on',!isBranch);$('back').style.display=i===0?'none':'block';
   $('next').textContent=(i===flow.length-1)?'Build my prep sheet':'Continue';
   if(id==='step-specifics')renderSpecifics();
   if(id==='step-context')$('pregWrap').style.display=(S.sex==='Female')?'block':'none';
@@ -574,7 +576,7 @@ function neuroAutoimmune(){const t=[...S.aiOther].join(' ').toLowerCase();return
 let REPORT={};
 function generate(){buildSnaps();buildFlags();buildPeptides();buildQuestions();buildLabs();buildSponsored();buildBottomLine();buildPrinciples();
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  $('wizard').style.display='none';$('nav').style.display='none';$('progressWrap').style.display='none';
+  $('wizard').style.display='none';$('nav').style.display='none';document.body.classList.remove('nav-on');$('progressWrap').style.display='none';
   $('deepenCta').style.display=deepened?'none':'flex';
   $('results').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
 $('deepenBtn').onclick=()=>{deepened=true;flow=[...baseFlow,...enrichFlow()];$('results').style.display='none';$('wizard').style.display='block';show(baseFlow.length);};
