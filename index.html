@@ -242,7 +242,7 @@
   </div>
   <div class="sp"></div>
   <a class="navlink" href="peptide-university-orientation.html" target="_blank" rel="noopener">Start Here ↗</a>
-  <div class="bview" id="bview"><span>Builder view</span><span class="sw"></span></div>
+
 </div></header>
 <div id="progressWrap"><div id="progressBar"></div></div>
 
@@ -414,7 +414,7 @@
 
 <div id="nav"><div class="nav-in"><button class="btn-back" id="back">Back</button><button class="btn-next" id="next" disabled>Continue</button></div></div>
 
-<footer>PeptideDecide.com · functional prototype. Educational use only — not medical advice, prescribing, or diagnosis.<br>Toggle <b>Builder view</b> (top right) to see the compliance rationale baked into each section.<br><a href="privacy-and-disclosures.html" style="color:var(--accent-2)">Privacy &amp; Disclosures</a></footer>
+<footer>PeptideDecide.com · functional prototype. Educational use only — not medical advice, prescribing, or diagnosis.<br><a href="privacy-and-disclosures.html" style="color:var(--accent-2)">Privacy &amp; Disclosures</a></footer>
 
 <script>
 /* ============ DATA ============ */
@@ -530,7 +530,7 @@ function enrichFlow(){const f=[];if(relevantSubConditions().length)f.push('step-
 function show(i){document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));const id=flow[i];$(id).classList.add('active');pos=i;window.scrollTo({top:0,behavior:'smooth'});
   const isWelcome=id==='step-welcome',isBranch=id==='step-branch';
   $('progressWrap').style.display=isWelcome?'none':'block';$('progressBar').style.width=((i)/(flow.length-1)*100)+'%';
-  $('nav').style.display=isBranch?'none':'flex';$('back').style.visibility=i===0?'hidden':'visible';
+  $('nav').style.display=isBranch?'none':'flex';$('back').style.display=i===0?'none':'block';
   $('next').textContent=(i===flow.length-1)?'Build my prep sheet':'Continue';
   if(id==='step-specifics')renderSpecifics();
   if(id==='step-context')$('pregWrap').style.display=(S.sex==='Female')?'block':'none';
@@ -772,7 +772,6 @@ function generatePDF(){
 function buyCheck(){$('buy').disabled=!($('email').value.includes('@')&&$('cCollect').checked);}
 $('email').addEventListener('input',buyCheck);$('cCollect').addEventListener('change',buyCheck);
 $('buy').onclick=()=>{generatePDF();$('buy').textContent='\u2713 PDF downloaded (prototype \u2014 no charge)';};
-$('bview').onclick=function(){document.body.classList.toggle('bon');this.classList.toggle('on');};
 show(0);
 </script>
 </body>
