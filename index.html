@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PeptideDecide — Appointment Prep</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>PeptideDecide</h1>
+      <p class="tagline">Organize your questions before your doctor's appointment.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="disclaimer">
+      <strong>Not medical advice.</strong> This tool helps you organize questions
+      to discuss with a licensed clinician. It does not diagnose, recommend, or
+      prescribe anything. Nothing you enter leaves your browser.
+    </section>
+
+    <section class="prep-builder">
+      <h2>Build your appointment prep sheet</h2>
+
+      <label for="topic">What are you considering discussing?</label>
+      <input id="topic" type="text" placeholder="e.g., a GLP-1 medication option" />
+
+      <label for="goal">What's your main goal?</label>
+      <input id="goal" type="text" placeholder="e.g., understand risks and alternatives" />
+
+      <label for="questions">Your questions (one per line)</label>
+      <textarea id="questions" rows="6"
+        placeholder="What are the risks?&#10;What are FDA-approved alternatives?&#10;How will we monitor side effects?"></textarea>
+
+      <button id="generate">Generate prep sheet</button>
+    </section>
+
+    <section id="output" class="output hidden">
+      <h2>Your prep sheet</h2>
+      <div id="output-content"></div>
+      <button id="copy">Copy to clipboard</button>
+      <button id="print">Print / Save as PDF</button>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>PeptideDecide is an informational organizing tool, not a medical service.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
