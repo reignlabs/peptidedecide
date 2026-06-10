@@ -25,6 +25,7 @@
   .mono{font-family:'JetBrains Mono',monospace}
   h1,h2,h3,h4{letter-spacing:-.025em;line-height:1.08;font-weight:700}
   .wrap{max-width:780px;margin:0 auto;padding:0 20px}
+  #wizard:has(#step-welcome.active){max-width:940px}
   button{font-family:inherit;cursor:pointer;border:none;background:none}
 
   header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line-2)}
@@ -53,11 +54,13 @@
   .step .lede{font-size:17px;color:var(--ink-2);max-width:540px;margin-bottom:30px}
 
   #step-welcome{text-align:center;padding-top:34px}
-  #step-welcome.active{min-height:calc(100vh - 230px);display:flex;flex-direction:column;justify-content:center;padding-top:10px;padding-bottom:0}
+  #step-welcome.active{display:flex;flex-direction:column;align-items:center;padding-top:64px;padding-bottom:40px}
+  #step-welcome>*:not(.privacy-line){width:100%}
+  #step-welcome h1{max-width:900px;margin-left:auto;margin-right:auto}
   .hero-mark{width:84px;height:84px;border-radius:23px;margin:0 auto 26px;box-shadow:var(--sh-lg)}
   #step-welcome h1{font-size:clamp(34px,8vw,58px);font-weight:800;margin-bottom:16px;letter-spacing:-.035em}
   #step-welcome h1 .g{background:linear-gradient(120deg,var(--accent),#19b394);-webkit-background-clip:text;background-clip:text;color:transparent}
-  #step-welcome .lede{margin:0 auto 30px;font-size:18px}
+  #step-welcome .lede{max-width:600px;margin:6px auto 34px;font-size:18px}
   .hero-glow{position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(60% 40% at 50% 0%,rgba(10,138,114,.10),transparent 70%)}
   .gate{max-width:440px;margin:0 auto;background:linear-gradient(180deg,var(--accent-soft),#fff);border:1.5px solid var(--accent);border-radius:var(--r-lg);padding:22px;box-shadow:0 8px 30px rgba(10,138,114,.16)}
   .gate-prompt{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-2);text-align:center;margin-bottom:14px}
@@ -67,7 +70,7 @@
   .agree{display:flex;gap:11px;align-items:flex-start;text-align:left;font-size:13.5px;color:var(--ink-2);cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px}
   .agree input{margin-top:2px;width:19px;height:19px;flex:none;accent-color:var(--accent)}
   .disc-mini{font-size:12.5px;color:var(--ink-3);max-width:460px;margin:22px auto 0;line-height:1.5}
-  .privacy-line{display:inline-flex;align-items:center;gap:8px;margin:18px auto 0;font-size:13px;font-weight:600;color:var(--accent-2);background:var(--accent-soft);border-radius:30px;padding:9px 16px}
+  .privacy-line{display:inline-flex;align-items:center;gap:8px;margin:18px auto 0;font-size:13px;font-weight:600;color:var(--accent-2);background:var(--accent-soft);border-radius:30px;padding:9px 16px;width:auto;max-width:max-content}
 
   label.fl{display:block;font-weight:600;font-size:14px;margin-bottom:9px}
   label.fl .opt{color:var(--ink-3);font-weight:500}
@@ -253,7 +256,7 @@
 <main class="wrap" id="wizard">
   <section class="step active" id="step-welcome">
     <div class="hero-glow"></div>
-    <h1>Most peptides aren't<br>right for you.<br><span class="g">Find out in 2 minutes which ones you should ask your doctor about.</span></h1>
+    <h1>Most peptides aren't right for you. <span class="g">Find out in 2 minutes which ones you should ask your doctor about.</span></h1>
     <p class="lede">A free, hype-free briefing that flags what to be skeptical of and turns it into an honest, doctor-ready conversation — personalized to your health history. No sales pitch, no protocols.</p>
     <div class="gate">
       <div class="gate-prompt">Start here — it's free</div>
