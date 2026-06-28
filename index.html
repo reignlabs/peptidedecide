@@ -3,202 +3,899 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Peptide &amp; Stack Library | PeptideDecide</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>PeptideDecide — Appointment Prep, Decoded</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#fff;--bg-2:#f5f5f7;--bg-3:#fbfbfd;--ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#a1a1a6;--line:#e3e3e6;--line-2:#ededf0;--accent:#0a8a72;--accent-2:#0f6f5c;--accent-soft:#e6f4f0;--amber:#a86711;--amber-soft:#fbf2e2;--red:#b3261e;--red-soft:#fbe9e7;--blue:#2563a8;--blue-soft:#e6eefa;--r:16px;--ease:cubic-bezier(.4,0,.1,1)}
+  :root{
+    --bg:#ffffff;--bg-2:#f5f5f7;--bg-3:#fbfbfd;
+    --ink:#1d1d1f;--ink-2:#6e6e73;--ink-3:#a1a1a6;
+    --line:#e3e3e6;--line-2:#ededf0;
+    --accent:#0a8a72;--accent-2:#0f6f5c;--accent-soft:#e6f4f0;
+    --amber:#a86711;--amber-soft:#fbf2e2;--red:#b3261e;--red-soft:#fbe9e7;
+    --r-lg:22px;--r-md:16px;--r-sm:12px;
+    --sh-sm:0 1px 2px rgba(0,0,0,.04);--sh-md:0 4px 20px rgba(0,0,0,.06);--sh-lg:0 18px 50px rgba(0,0,0,.10);
+    --ease:cubic-bezier(.4,0,.1,1);
+  }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
-  body{font-family:'Plus Jakarta Sans',-apple-system,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
-  h1,h2,h3,h4{letter-spacing:-.025em;line-height:1.12;font-weight:800}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   .mono{font-family:'JetBrains Mono',monospace}
-  a{color:var(--accent-2)}
-  header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line-2)}
-  .hb{max-width:880px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px}
-  .hb .mk{width:27px;height:27px;border-radius:8px;background:linear-gradient(135deg,#19b394,#0a7a64);flex:none}
-  .hb span{color:var(--ink-3);font-weight:600}.hb .sp{flex:1}.hb a{font-size:13px;font-weight:700;text-decoration:none}
+  h1,h2,h3,h4{letter-spacing:-.025em;line-height:1.08;font-weight:700}
+  .wrap{max-width:780px;margin:0 auto;padding:0 20px}
+  button{font-family:inherit;cursor:pointer;border:none;background:none}
 
-  .hero{padding:40px 0 10px}
-  .kick{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
-  .hero h1{font-size:clamp(28px,6vw,44px);font-weight:800;letter-spacing:-.035em;margin-bottom:12px}
-  .hero p{font-size:17px;color:var(--ink-2);max-width:600px}
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line-2)}
+  .hbar{max-width:1040px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.02em}
+  .brand .mark{width:30px;height:30px;border-radius:9px;flex:none;box-shadow:0 2px 6px rgba(10,138,114,.35)}
+  .brand b{font-weight:800}.brand .l2{color:var(--ink-3);font-weight:600}
+  .hbar .sp{flex:1}
+  .bview{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);user-select:none}
+  .navlink{font-size:13px;font-weight:700;color:var(--accent-2);text-decoration:none;background:var(--accent-soft);padding:7px 13px;border-radius:30px;white-space:nowrap}
+  .navlink:active{transform:scale(.97)}
+  .sw{width:38px;height:22px;border-radius:20px;background:var(--line);position:relative;transition:.25s var(--ease)}
+  .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--sh-sm);transition:.25s var(--ease)}
+  .bview.on .sw{background:var(--accent)}.bview.on .sw::after{left:18px}
 
-  .warn{margin:22px 0;background:var(--amber-soft);border:1px solid #ecdcc0;border-radius:var(--r);padding:15px 18px;font-size:13.5px;color:#6f4a12;display:flex;gap:11px;line-height:1.55}
-  .warn b{color:#5a3c0e}
+  #progressWrap{height:3px;background:var(--line-2);position:sticky;top:53px;z-index:49;display:none}
+  #progressBar{height:100%;width:0;background:var(--accent);border-radius:0 3px 3px 0;transition:width .45s var(--ease)}
 
-  .controls{position:sticky;top:53px;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:14px 0 10px;margin-bottom:6px}
-  #search{width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:30px;font-family:inherit;font-size:16px;background:var(--bg-3);margin-bottom:11px;min-height:48px}
-  #search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);background:#fff}
-  .cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
-  .cat{flex:none;border:1px solid var(--line);background:var(--bg);border-radius:30px;padding:8px 15px;font-size:13.5px;font-weight:600;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:.15s var(--ease)}
-  .cat.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  #wizard{padding:8px 0 130px}
+  .step{display:none;animation:rise .5s var(--ease) both}
+  .step.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .eyebrow{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+  .step h2{font-size:clamp(27px,6vw,40px);margin-bottom:12px}
+  .step .lede{font-size:17px;color:var(--ink-2);max-width:540px;margin-bottom:30px}
 
-  .legend{display:flex;flex-wrap:wrap;gap:7px 16px;font-size:11.5px;color:var(--ink-2);margin:6px 0 18px}
+  #step-welcome{text-align:center;padding-top:34px}
+  .hero-mark{width:84px;height:84px;border-radius:23px;margin:0 auto 26px;box-shadow:var(--sh-lg)}
+  #step-welcome h1{font-size:clamp(34px,8vw,58px);font-weight:800;margin-bottom:16px;letter-spacing:-.035em}
+  #step-welcome h1 .g{background:linear-gradient(120deg,var(--accent),#19b394);-webkit-background-clip:text;background-clip:text;color:transparent}
+  #step-welcome .lede{margin:0 auto 30px;font-size:18px}
+  .hero-glow{position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(60% 40% at 50% 0%,rgba(10,138,114,.10),transparent 70%)}
+  .gate{max-width:430px;margin:0 auto;background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh-sm)}
+  .gate .agewrap{display:flex;gap:12px;align-items:center;margin-bottom:14px;text-align:left}
+  .gate .agewrap label{font-size:14px;font-weight:600;flex:1}
+  .gate input[type=number]{width:96px}
+  .agree{display:flex;gap:11px;align-items:flex-start;text-align:left;font-size:13.5px;color:var(--ink-2);cursor:pointer}
+  .agree input{margin-top:2px;width:19px;height:19px;flex:none;accent-color:var(--accent)}
+  .disc-mini{font-size:12.5px;color:var(--ink-3);max-width:460px;margin:22px auto 0;line-height:1.5}
+  .privacy-line{display:inline-flex;align-items:center;gap:8px;margin:18px auto 0;font-size:13px;font-weight:600;color:var(--accent-2);background:var(--accent-soft);border-radius:30px;padding:9px 16px}
+
+  label.fl{display:block;font-weight:600;font-size:14px;margin-bottom:9px}
+  label.fl .opt{color:var(--ink-3);font-weight:500}
+  input[type=number],input[type=email],input[type=text],select,textarea{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink);transition:.18s var(--ease);min-height:48px}
+  textarea{min-height:80px;resize:vertical;line-height:1.5}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .fgroup{margin-bottom:24px}
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{border:1px solid var(--line);background:var(--bg);border-radius:30px;padding:11px 18px;font-size:15px;font-weight:500;color:var(--ink);transition:.18s var(--ease);min-height:46px;display:inline-flex;align-items:center}
+  .chip:active{transform:scale(.96)}
+  .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .chip.on.acc{background:var(--accent);border-color:var(--accent)}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .selcard{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--bg);border-radius:var(--r-md);padding:14px 16px;font-size:15px;font-weight:500;transition:.16s var(--ease);min-height:54px}
+  .selcard:active{transform:scale(.985)}
+  .selcard.on{border-color:var(--accent);background:var(--accent-soft)}
+  .selcard .tick{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line);flex:none;display:flex;align-items:center;justify-content:center;background:var(--bg);transition:.16s}
+  .selcard.on .tick{background:var(--accent);border-color:var(--accent)}
+  .selcard .tick svg{opacity:0;transition:.16s}.selcard.on .tick svg{opacity:1}
+
+  .unit{display:inline-flex;background:var(--bg-2);border-radius:10px;padding:3px;margin-bottom:12px}
+  .unit button{padding:8px 16px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.18s}
+  .unit button.on{background:var(--bg);color:var(--ink);box-shadow:var(--sh-sm)}
+  .bmi{margin-top:14px;display:flex;align-items:center;gap:13px;min-height:40px}
+  .bmi .n{font-size:30px;font-weight:800;letter-spacing:-.03em}
+  .bmi .t{font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em}
+  .bmi .ph{color:var(--ink-3);font-size:14px}
+
+  .subgroup{border:1px solid var(--line-2);background:var(--bg-3);border-radius:var(--r-md);padding:16px;margin-bottom:13px;animation:rise .4s var(--ease) both}
+  .subgroup h4{font-size:15px;margin-bottom:12px;letter-spacing:-.01em}
+
+  /* autocomplete */
+  .ac{position:relative;margin-top:14px}
+  .ac-label{font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:8px;display:block}
+  .ac-list{position:absolute;left:0;right:0;top:100%;z-index:20;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh-md);max-height:240px;overflow:auto;margin-top:6px;display:none}
+  .ac-list.show{display:block}
+  .ac-item{padding:11px 14px;font-size:14px;cursor:pointer;border-bottom:1px solid var(--line-2)}
+  .ac-item:last-child{border:none}
+  .ac-item:hover{background:var(--accent-soft)}
+  .ac-item .add{float:right;color:var(--accent);font-weight:700}
+  .ac-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+  .ac-tag{display:inline-flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent-2);border-radius:20px;padding:7px 8px 7px 13px;font-size:13px;font-weight:600}
+  .ac-tag button{color:var(--accent-2);font-weight:800;font-size:16px;line-height:.8;opacity:.55;width:18px;height:18px;border-radius:50%}
+  .ac-tag button:hover{opacity:1;background:rgba(15,111,92,.12)}
+
+  .branchgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+  .bcard{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:var(--r-lg);padding:24px;transition:.2s var(--ease);box-shadow:var(--sh-sm)}
+  .bcard:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+  .bcard.primary{border-color:var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--bg))}
+  .bcard .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--bg-2);margin-bottom:14px}
+  .bcard.primary .ic{background:var(--accent);color:#fff}
+  .bcard h3{font-size:19px;margin-bottom:6px}
+  .bcard p{font-size:14px;color:var(--ink-2);margin-bottom:16px}
+  .bcard .go{font-size:14px;font-weight:700;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+
+  #nav{position:fixed;bottom:0;left:0;right:0;z-index:48;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line-2);padding:13px 20px calc(13px + env(safe-area-inset-bottom));display:none}
+  .nav-in{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .btn-back{padding:13px 20px;border-radius:30px;font-size:15px;font-weight:600;color:var(--ink-2);background:var(--bg-2);transition:.16s}
+  .btn-back:active{transform:scale(.97)}
+  .btn-next{flex:1;padding:15px;border-radius:30px;font-size:16px;font-weight:700;color:#fff;background:var(--accent);transition:.18s var(--ease);box-shadow:0 4px 14px rgba(10,138,114,.32)}
+  .btn-next:active{transform:scale(.98)}
+  .btn-next:disabled{background:var(--line);color:var(--ink-3);box-shadow:none;cursor:not-allowed}
+
+  #results{display:none;padding:30px 0 60px}
+  .rhero{text-align:center;margin-bottom:14px}.rhero .eyebrow{justify-content:center}.rhero h2{font-size:clamp(28px,6vw,40px)}
+  .disclaimer{margin:20px auto 6px;max-width:620px;background:var(--bg-2);border-radius:var(--r-md);padding:15px 17px;font-size:13px;color:var(--ink-2);display:flex;gap:11px;text-align:left}
+  .disclaimer b{color:var(--ink)}
+  .deepen-cta{margin:22px auto 0;max-width:620px;border:1px solid var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--bg));border-radius:var(--r-md);padding:16px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .deepen-cta .tx{flex:1;min-width:200px}
+  .deepen-cta b{font-size:15px}.deepen-cta p{font-size:13px;color:var(--ink-2)}
+  .deepen-cta button{background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:11px 18px;border-radius:30px;white-space:nowrap;transition:.16s}
+  .deepen-cta button:active{transform:scale(.97)}
+  .bottomline{margin:22px auto 0;max-width:620px;border:1px solid var(--accent);background:linear-gradient(180deg,var(--accent-soft),var(--bg));border-radius:var(--r-md);padding:20px 22px}
+  .bottomline .bh{font-size:12px;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .bottomline p{font-size:16px;line-height:1.6;color:var(--ink);margin:0}
+  .principle{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--line-2)}
+  .principle:last-child{border:none}
+  .principle .pn{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .principle.hot .pn{background:var(--accent)}
+  .principle .pt{font-size:15px;font-weight:700;display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+  .principle .you{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:20px;padding:2px 9px}
+  .principle .pd{font-size:13.5px;color:var(--ink-2);margin-top:2px}
+  .foundation{margin-top:16px;background:var(--accent-soft);border:1px solid #bfe2d8;border-radius:var(--r-md);padding:16px 18px;font-size:14.5px;color:var(--ink);line-height:1.55}
+  .foundation b{color:var(--accent-2)}
+  .rsec{margin-top:40px}
+  .rsec-h{display:flex;align-items:baseline;gap:11px;margin-bottom:8px}
+  .rsec-h .nu{font-size:12px;font-weight:700;color:var(--accent);border:1px solid var(--accent-soft);background:var(--accent-soft);border-radius:20px;padding:3px 10px;flex:none}
+  .rsec-h h3{font-size:23px}
+  .rsec .sub{font-size:14.5px;color:var(--ink-2);margin-bottom:18px;max-width:560px}
+  .snaps{display:flex;flex-wrap:wrap;gap:10px}
+  .snap{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-md);padding:13px 18px;min-width:84px}
+  .snap b{display:block;font-size:23px;font-weight:800;letter-spacing:-.02em}
+  .snap span{font-size:11px;color:var(--ink-2);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+  .flag{border-radius:var(--r-md);padding:16px 18px;margin-bottom:11px;border:1px solid var(--line);background:var(--bg)}
+  .flag.high{border-color:#eccdc9;background:var(--red-soft)}
+  .flag.med{border-color:#ecdcc0;background:var(--amber-soft)}
+  .flag.ok{border-color:#cce8e0;background:var(--accent-soft)}
+  .flag .ft{font-weight:700;font-size:15px;display:flex;align-items:center;gap:9px;margin-bottom:5px;flex-wrap:wrap}
+  .flag .lv{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em;color:#fff}
+  .flag.high .lv{background:var(--red)}.flag.med .lv{background:var(--amber)}.flag.ok .lv{background:var(--accent)}
+  .flag p{font-size:13.5px;color:var(--ink-2)}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:16px;font-size:12px;color:var(--ink-2)}
   .legend span{display:inline-flex;align-items:center;gap:6px}
-  .bdg{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
-  .b-ap{background:var(--accent-soft);color:var(--accent-2)}.b-rv{background:var(--amber-soft);color:var(--amber)}.b-no{background:var(--red-soft);color:var(--red)}.b-cos{background:var(--blue-soft);color:var(--blue)}.b-ev{background:var(--bg-2);color:var(--ink-2)}
+  .bdg{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+  .b-ap{background:var(--accent-soft);color:var(--accent-2)}.b-rv{background:var(--amber-soft);color:var(--amber)}.b-no{background:var(--red-soft);color:var(--red)}.b-ev{background:var(--bg-2);color:var(--ink-2)}
+  .pep{border:1px solid var(--line);border-radius:var(--r-md);padding:17px;margin-bottom:11px;background:var(--bg)}
+  .pep.flagged{border-color:#eccdc9}
+  .pep-t{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+  .pep-n{font-size:17px;font-weight:700;letter-spacing:-.01em}.pep-n small{display:block;font-size:12.5px;color:var(--ink-3);font-weight:500;margin-top:1px}
+  .pep-b{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .pep-d{font-size:13.5px;color:var(--ink-2);margin:9px 0}
+  .pep-note{font-size:12.5px;border-radius:9px;padding:9px 12px;display:flex;gap:8px;align-items:flex-start;line-height:1.45}
+  .pep-note.warn{background:var(--red-soft);color:#8c241c}.pep-note.good{background:var(--accent-soft);color:var(--accent-2)}
+  .pep-ask{font-size:12.5px;margin-top:9px;color:var(--ink)}.pep-ask b{color:var(--accent)}
+  .pep.pinned{border-color:var(--accent);box-shadow:0 3px 16px rgba(10,138,114,.1)}
+  .pep-pin{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:20px;padding:3px 10px;margin-bottom:9px}
+  .pep .recipe{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--accent-2);font-weight:500}
+  .pep.stack{background:var(--bg-3)}
+  .stacks-h{font-size:16px;font-weight:800;margin:24px 0 4px;letter-spacing:-.01em}
+  .liblink{display:inline-block;margin:14px 0 4px;font-size:14px;font-weight:700;color:var(--accent-2);text-decoration:none}
+  .liblink:active{opacity:.6}
+  .qlist{list-style:none}.qlist li{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line-2);font-size:15px}.qlist li:last-child{border:none}
+  .qlist .qm{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent-2);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .labs{display:flex;flex-wrap:wrap;gap:9px}.lab{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px 14px;font-size:13.5px}.lab b{display:block;font-size:13px;color:var(--accent-2);font-weight:700}
 
-  .sech{font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 12px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:680px){.grid{grid-template-columns:1fr}.hero p{font-size:16px}}
-  .item{border:1px solid var(--line);border-radius:var(--r);padding:16px;background:var(--bg);transition:.14s var(--ease)}
-  .item:hover{box-shadow:0 5px 20px rgba(0,0,0,.05)}
-  .it-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .it-n{font-size:17px;font-weight:800;letter-spacing:-.01em}
-  .it-n .np{font-size:9px;font-weight:700;color:var(--ink-3);border:1px solid var(--line);border-radius:5px;padding:1px 5px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.03em}
-  .it-n small{display:block;font-size:12px;color:var(--ink-3);font-weight:500;margin-top:1px}
-  .heat{display:flex;gap:3px;align-items:center;flex:none;margin-top:3px}
-  .pip{width:7px;height:14px;border-radius:2px;background:var(--line)}
-  .pip.on{background:var(--accent)}
-  .it-badges{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 8px}
-  .it-d{font-size:13px;color:var(--ink-2);margin-bottom:8px}
-  .it-buzz{font-size:11.5px;color:var(--ink-3);margin-bottom:8px}
-  .it-c{font-size:12px;background:var(--red-soft);color:#8c241c;border-radius:8px;padding:7px 10px;display:flex;gap:7px;align-items:flex-start;line-height:1.45}
-  .it-c.amber{background:var(--amber-soft);color:#6f4a12}
-  .it-c svg{flex:none;margin-top:1px}
+  .wall{margin-top:48px;border:1.5px dashed var(--line);border-radius:var(--r-lg);padding:6px 20px 22px}
+  .wtab{display:inline-block;transform:translateY(-13px);background:var(--amber-soft);color:var(--amber);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 13px;border-radius:20px}
+  .adisc{font-size:12.5px;color:var(--ink-2);background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-md);padding:13px 15px;margin-bottom:15px;display:flex;gap:10px;line-height:1.5}
+  .adisc b{color:var(--ink)}
+  .res2{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+  .relhook{display:none;background:var(--accent-soft);border:1px solid #bfe2d8;border-radius:var(--r-md);padding:12px 15px;margin-bottom:15px;font-size:13.5px;color:var(--accent-2);font-weight:600;align-items:center;gap:9px}
+  .relhook.show{display:flex}
+  .res.featured{border:1.5px solid var(--accent);box-shadow:0 6px 22px rgba(10,138,114,.12)}
+  .res-tag{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-2);background:var(--accent-soft);display:inline-block;padding:3px 9px;border-radius:20px;margin-bottom:9px}
+  .trust{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .ts{font-size:10.5px;font-weight:600;color:var(--ink-2);background:var(--bg-2);border:1px solid var(--line);border-radius:20px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px}
+  .ts::before{content:"✓";color:var(--accent);font-weight:800}
+  .priceline{font-size:12.5px;color:var(--ink-2);margin-bottom:13px}.priceline b{font-size:18px;color:var(--ink);font-weight:800;letter-spacing:-.02em}
+  .alink.alt{background:var(--bg);color:var(--accent);border:1px solid var(--accent)}
+  .alink.alt:active{transform:scale(.97)}
+  .res{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-md);padding:18px}
+  .res h4{font-size:16px;margin-bottom:6px}.res p{font-size:13px;color:var(--ink-2);margin-bottom:14px}
+  .alink{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:#fff;background:var(--accent);border-radius:30px;padding:11px 18px;text-decoration:none;transition:.16s}
+  .alink:active{transform:scale(.97)}.res .ph{font-size:10px;color:var(--ink-3);margin-top:9px}
 
-  .stack .it-n{color:var(--accent-2)}
-  .stack{border-color:#cfe5dd}
-  .stack .recipe{font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--ink-2);background:var(--bg-2);border-radius:8px;padding:8px 11px;margin:8px 0}
+  .paywall{margin-top:28px;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--sh-sm)}
+  .pw-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+  .pw-top .price{font-size:40px;font-weight:800;letter-spacing:-.03em}.pw-top .price small{font-size:14px;color:var(--ink-2);font-weight:500}
+  .pw-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:26px}
+  .incl li,.excl li{display:flex;gap:9px;font-size:13.5px;padding:5px 0}
+  .incl .m{color:var(--accent);font-weight:800}.excl .m{color:var(--red);font-weight:800}
+  .excl{margin-top:14px}.excl .eh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);margin-bottom:3px}
+  .erow{display:flex;flex-direction:column;gap:11px}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--ink-2);line-height:1.45;cursor:pointer}
+  .consent input{margin-top:2px;width:17px;height:17px;flex:none;accent-color:var(--accent)}.consent a{color:var(--accent)}
+  .buy{background:var(--accent);color:#fff;font-weight:700;font-size:16px;padding:15px;border-radius:30px;transition:.16s;box-shadow:0 4px 14px rgba(10,138,114,.3)}
+  .buy:active{transform:scale(.98)}.buy:disabled{background:var(--line);color:var(--ink-3);box-shadow:none}
+  .pwn{font-size:11px;color:var(--ink-3);text-align:center;margin-top:9px}
+  .postbuy{display:none;margin-top:20px;border-top:1px solid var(--line);padding-top:20px}
+  .postbuy.show{display:block;animation:rise .4s var(--ease)}
+  .pb-h{display:flex;align-items:center;gap:9px;font-weight:800;font-size:18px;color:var(--accent-2);margin-bottom:14px}
+  .pb-actions{margin-bottom:18px}
+  .pb-btn{font-family:inherit;font-weight:700;font-size:14px;padding:12px 18px;border-radius:30px;border:1px solid var(--accent);background:var(--bg);color:var(--accent-2);cursor:pointer;transition:.15s var(--ease)}
+  .pb-btn:active{transform:scale(.97)}
+  .pb-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(10,138,114,.3)}
+  .pb-share{background:var(--bg-3);border:1px solid var(--line);border-radius:var(--r-md);padding:16px}
+  .pb-label{font-size:13.5px;color:var(--ink);font-weight:600;margin-bottom:10px}
+  #shareText{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font-family:inherit;font-size:13.5px;color:var(--ink-2);line-height:1.5;background:#fff;resize:vertical}
+  .pb-row{display:flex;align-items:center;gap:12px;margin-top:11px;flex-wrap:wrap}
+  .pb-meta{font-size:12px;color:var(--ink-3)}.pb-meta b{color:var(--accent-2);font-family:'JetBrains Mono',monospace}
 
-  .empty{text-align:center;color:var(--ink-3);padding:30px;font-size:14px;display:none}
-  footer{border-top:1px solid var(--line-2);margin-top:36px;padding:26px 20px 44px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
-  footer a{color:var(--accent-2)}
+  .cnote{display:none;margin:9px 0 0;font-size:12px;border:1px dashed var(--accent);background:var(--accent-soft);border-radius:10px;padding:10px 13px;color:var(--accent-2);line-height:1.5}
+  .cnote .tg{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--accent);color:#fff;padding:2px 7px;border-radius:20px;margin-right:7px}
+  body.bon .cnote{display:block;animation:rise .3s var(--ease)}
+
+  footer{text-align:center;font-size:12px;color:var(--ink-3);padding:30px 20px 40px;line-height:1.7}footer a{color:var(--accent)}
+
+  @media(max-width:760px){.res2{grid-template-columns:1fr}}
+  @media(max-width:600px){.grid2,.cards,.branchgrid,.pw-grid{grid-template-columns:1fr}.step .lede,#step-welcome .lede{font-size:16px}.paywall{padding:22px}.rsec-h h3{font-size:20px}}
 </style>
 </head>
 <body>
-<header><div class="hb"><span class="mk"></span>Peptide<span>Decide</span><span class="sp"></span><a href="peptidedecide-prototype.html">Get my briefing →</a></div></header>
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19b394"/><stop offset="1" stop-color="#0a7a64"/></linearGradient></defs></svg>
 
-<main class="wrap">
-  <div class="hero">
-    <div class="kick">Peptide University · Library</div>
-    <h1>The peptide &amp; stack library</h1>
-    <p>Every name you'll run into — the famous ones and the obscure ones — decoded in plain English, with an honest status and a popularity signal. Search it, scan it, then bring the relevant ones to your doctor.</p>
+<header><div class="hbar">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="27" fill="url(#logoGrad)"/><g stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"><circle cx="33" cy="36" r="9" fill="#fff" stroke="none"/><line x1="40" y1="42" x2="60" y2="58"/><circle cx="67" cy="64" r="9" fill="#fff" stroke="none"/><line x1="60" y1="42" x2="40" y2="58"/><circle cx="67" cy="36" r="6.5" fill="#fff" stroke="none" opacity=".75"/><circle cx="33" cy="64" r="6.5" fill="#fff" stroke="none" opacity=".75"/></g></svg>
+    <span><b>Peptide</b><span class="l2">Decide</span></span>
   </div>
+  <div class="sp"></div>
+  <a class="navlink" href="peptide-university-orientation.html" target="_blank" rel="noopener">Start Here ↗</a>
+  <div class="bview" id="bview"><span>Builder view</span><span class="sw"></span></div>
+</div></header>
+<div id="progressWrap"><div id="progressBar"></div></div>
 
-  <div class="warn">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a86711" stroke-width="2" style="flex:none"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
-    <div><b>Popularity is not endorsement — and this isn't a how-to.</b> Many of the most hyped compounds here are unapproved, research-only, or were banned from U.S. compounding in 2023 (some are under FDA review, with a decision expected after a July 2026 advisory meeting). We list no doses, sources, or protocols. This is educational decoding to prepare you for a licensed clinician, who makes all decisions.</div>
-  </div>
+<main class="wrap" id="wizard">
+  <section class="step active" id="step-welcome">
+    <div class="hero-glow"></div>
+    <svg class="hero-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="27" fill="url(#logoGrad)"/><g stroke="#fff" stroke-width="7" stroke-linecap="round" fill="none"><circle cx="33" cy="36" r="9" fill="#fff" stroke="none"/><line x1="40" y1="42" x2="60" y2="58"/><circle cx="67" cy="64" r="9" fill="#fff" stroke="none"/><line x1="60" y1="42" x2="40" y2="58"/><circle cx="67" cy="36" r="6.5" fill="#fff" stroke="none" opacity=".75"/><circle cx="33" cy="64" r="6.5" fill="#fff" stroke="none" opacity=".75"/></g></svg>
+    <h1>Most peptides aren't<br>right for you.<br><span class="g">Find out which ones are even worth asking about.</span></h1>
+    <p class="lede">A free, hype-free briefing that flags what to be skeptical of and turns it into an honest, doctor-ready conversation — personalized to your health history. No sales pitch, no protocols.</p>
+    <div class="gate">
+      <div class="agewrap"><label for="age">Your age</label><input type="number" id="age" min="13" max="100" placeholder="42" inputmode="numeric"></div>
+      <label class="agree"><input type="checkbox" id="age18"><span>I confirm I am 18 or older and understand this is an educational prep tool, not medical advice.</span></label>
+    </div>
+    <div class="privacy-line"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Your answers stay on your device. We don't see or store your health information.</span></div>
+    <p class="disc-mini">PeptideDecide does not prescribe, diagnose, or recommend treatment. It translates published information into questions for a licensed clinician — the only person who can decide what's appropriate for you.</p>
+    <div class="cnote" style="max-width:460px;margin-left:auto;margin-right:auto"><span class="tg">Why</span>Hard 18+ gate first. The disclaimer leads, before any data is collected.</div>
+  </section>
 
-  <div class="controls">
-    <input type="text" id="search" placeholder="Search a peptide or stack… (e.g. BPC-157, Wolverine, Selank)">
-    <div class="cats" id="cats"></div>
-  </div>
+  <section class="step" id="step-goals">
+    <div class="eyebrow">●&nbsp; The basics</div><h2>What are you hoping to improve?</h2>
+    <p class="lede">Pick anything that applies — this shapes which compounds we surface.</p>
+    <div class="chips" id="goals"></div>
+    <div class="ac" id="curiousAC" style="margin-top:22px">
+      <label class="ac-label">Already curious about a specific peptide or stack? <span style="color:var(--ink-3)">— optional; we'll pin it to the top of your briefing</span></label>
+      <input type="text" id="curiousInput" placeholder="Start typing… e.g. BPC-157, Wolverine, Selank">
+      <div class="ac-list" id="curiousList"></div>
+      <div class="ac-tags" id="curiousTags"></div>
+    </div>
+  </section>
 
-  <div class="legend">
-    <span><span class="bdg b-ap">Approved</span> FDA-approved</span>
-    <span><span class="bdg b-rv">Under review</span> not legal to compound</span>
-    <span><span class="bdg b-no">Not approved</span> gray / research-only</span>
-    <span><span class="bdg b-cos">Topical OK</span> cosmetic only</span>
-    <span><span class="heat" style="display:inline-flex"><span class="pip on"></span><span class="pip on"></span><span class="pip on"></span><span class="pip"></span><span class="pip"></span></span> = how often you'll see it</span>
-  </div>
+  <section class="step" id="step-bio">
+    <div class="eyebrow">●&nbsp; The basics</div><h2>A little about your body.</h2>
+    <p class="lede">Used for an approximate BMI and to tailor your questions.</p>
+    <div class="fgroup"><label class="fl">Sex at birth</label><div class="chips" id="sex"><div class="chip" data-v="Female">Female</div><div class="chip" data-v="Male">Male</div></div></div>
+    <div class="fgroup"><label class="fl">Height &amp; weight</label>
+      <div class="unit" id="unit"><button class="on" data-u="imp">ft / lb</button><button data-u="met">cm / kg</button></div>
+      <div id="impIn" class="grid2"><div class="grid2" style="gap:10px"><input type="number" id="ft" placeholder="ft" inputmode="numeric"><input type="number" id="in" placeholder="in" inputmode="numeric"></div><input type="number" id="lb" placeholder="weight (lb)" inputmode="numeric"></div>
+      <div id="metIn" class="grid2" style="display:none"><input type="number" id="cm" placeholder="height (cm)" inputmode="numeric"><input type="number" id="kg" placeholder="weight (kg)" inputmode="numeric"></div>
+      <div class="bmi" id="bmi"><span class="ph">Enter height &amp; weight for your approximate BMI.</span></div>
+    </div>
+  </section>
 
-  <div id="singlesWrap"></div>
-  <div id="stacksWrap"></div>
-  <div class="empty" id="empty">No matches. Try a different term.</div>
+  <section class="step" id="step-conditions">
+    <div class="eyebrow">●&nbsp; The basics</div><h2>Any of these in your health history?</h2>
+    <p class="lede">This drives your caution flags. Select all that apply.</p>
+    <div class="cards" id="conditions"></div>
+    <div class="ac" id="otherCondAC">
+      <label class="ac-label">Don't see yours? Search and add any other condition <span style="color:var(--ink-3)">— captured for your doctor; some trigger flags</span></label>
+      <input type="text" id="otherCondInput" placeholder="Start typing… e.g. sleep apnea, acromegaly, melanoma">
+      <div class="ac-list" id="otherCondList"></div>
+      <div class="ac-tags" id="otherCondTags"></div>
+    </div>
+    <div class="cnote"><span class="tg">Why</span>The curated cards are the flag-drivers. The search field captures the long tail honestly: recognized entries (e.g. acromegaly, pancreatitis, melanoma) fire real flags; everything else is noted for the doctor — no pretending we screened 1,000 diseases.</div>
+  </section>
+
+  <section class="step" id="step-branch">
+    <div class="eyebrow">●&nbsp; Almost there</div><h2>Your free briefing is ready.</h2>
+    <p class="lede">See it now, or add a few optional details to build a more thorough, doctor-ready brief.</p>
+    <div class="branchgrid">
+      <button class="bcard" id="branchFree"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><h3>See my free briefing</h3><p>Your caution flags, decoded compound library, and doctor questions — free.</p><span class="go">Go now →</span></button>
+      <button class="bcard primary" id="branchDeep"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20v-6M6 20V10M18 20V4"/></svg></div><h3>Deepen my brief</h3><p>Add condition specifics, current medications &amp; context for sharper flags. ~4 quick steps.</p><span class="go">Add detail →</span></button>
+    </div>
+    <div class="cnote"><span class="tg">Strategy</span>Fast free value drives traffic; the minority who opt to deepen are your motivated PDF buyers. It's also data-minimization — sensitive specifics only from people who choose to share them. Optimize this for product value, never as a data-harvesting funnel (MHMDA bars deceptive-design consent).</div>
+  </section>
+
+  <section class="step" id="step-specifics">
+    <div class="eyebrow">●&nbsp; Deepen · 1 of 3</div><h2>Let's get specific.</h2>
+    <p class="lede">The details change the guidance — "autoimmune" is too broad to flag well on its own.</p>
+    <div id="specificsBody"></div>
+    <div class="cnote"><span class="tg">Why</span>Progressive disclosure: sub-questions appear only for conditions you selected. Specificity (active vs. remission cancer; which autoimmune disease) materially changes which flags fire.</div>
+  </section>
+
+  <section class="step" id="step-meds">
+    <div class="eyebrow">●&nbsp; Deepen · 2 of 3</div><h2>What do you currently take?</h2>
+    <p class="lede">Select categories — these drive interaction flags. No need to list exact drugs here.</p>
+    <div class="cards" id="meds"></div>
+    <div class="fgroup" style="margin-top:18px"><label class="fl">Anything else? <span class="opt">— optional, prints on your PDF for your doctor</span></label><textarea id="medsFree" placeholder="e.g. specific medications, supplements, or doses you'd like your physician to see"></textarea></div>
+    <div class="cnote"><span class="tg">Why</span>Categories are parseable and drive flags; the free-text box is <i>display-only</i> for the doctor — never analyzed for interactions in-app, keeping you out of clinical-screening territory.</div>
+  </section>
+
+  <section class="step" id="step-context">
+    <div class="eyebrow">●&nbsp; Deepen · 3 of 3</div><h2>A bit more context.</h2>
+    <p class="lede">All optional — skip anything you'd rather not answer.</p>
+    <div class="fgroup"><label class="fl">Prior experience <span class="opt">— optional</span></label><div class="cards" id="prior"></div></div>
+    <div class="fgroup" id="pregWrap" style="display:none"><label class="fl">Pregnancy status <span class="opt">— optional</span></label><div class="chips" id="preg"></div></div>
+    <div class="fgroup"><label class="fl">Activity level <span class="opt">— optional</span></label><div class="chips" id="activity"></div></div>
+  </section>
 </main>
 
-<footer>PeptideDecide.com · Library is free educational content. Popularity reflects observed buzz across forums, social, and search — not a safety rating. Not medical advice, prescribing, or diagnosis.<br><a href="peptide-university-orientation.html">Start Here</a> · <a href="privacy-and-disclosures.html">Privacy &amp; Disclosures</a></footer>
+<div class="wrap" id="results">
+  <div class="rhero"><div class="eyebrow">●&nbsp; Your prep sheet</div><h2>Here's what to bring to your doctor.</h2></div>
+  <div class="disclaimer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a86711" stroke-width="2" style="flex:none"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/></svg><div><b>Educational prep only — not medical advice.</b> PeptideDecide does not prescribe, diagnose, or recommend. Everything below is framed as topics to discuss with a licensed clinician.</div></div>
+
+  <div class="deepen-cta" id="deepenCta"><div class="tx"><b>Want sharper flags?</b><p>Add your current medications and condition specifics for a more personalized, doctor-ready brief.</p></div><button id="deepenBtn">Deepen my brief →</button></div>
+
+  <div class="bottomline" id="bottomline"></div>
+
+  <div class="rsec"><div class="rsec-h"><span class="nu">01</span><h3>Your snapshot</h3></div><div class="snaps" id="snaps"></div></div>
+  <div class="rsec"><div class="rsec-h"><span class="nu">02</span><h3>Caution flags from your history</h3></div>
+    <p class="sub">The most useful thing we do: based on what you entered, here's what to approach with the most skepticism — and exactly why.</p>
+    <div id="flags"></div>
+    <div class="cnote"><span class="tg">Value</span>This "filter out the noise" section is the safe, defensible core — it tells people what likely <i>isn't</i> a fit and why, rather than ranking what's "cleared for you."</div>
+  </div>
+  <div class="rsec"><div class="rsec-h"><span class="nu">03</span><h3>The compound library, decoded</h3></div>
+    <p class="sub">Each compound with its honest legal status and evidence quality. Notice how few are actually approved — that's the signal under the hype.</p>
+    <div class="legend"><span><span class="bdg b-ap">FDA-approved</span> prescribable</span><span><span class="bdg b-rv">Under FDA review</span> not yet legal to compound</span><span><span class="bdg b-no">Not approved</span> gray / research-only</span></div>
+    <div id="peptides"></div>
+    <div id="stacksBlock" style="display:none">
+      <h4 class="stacks-h">Stacks you may hear about</h4>
+      <p class="sub">Named combinations from forums and sellers — decoded, with the same honest status. No protocols or doses, just what they are.</p>
+      <div id="stacks"></div>
+    </div>
+    <div id="curiousNote"></div>
+    <a class="liblink" href="peptide-library.html" target="_blank" rel="noopener">Browse the full library of 30+ compounds &amp; stacks →</a>
+    <div class="cnote"><span class="tg">Compliance</span>Status labels are objective. No "buy," no "best for you," no efficacy claims. Approved drugs surface as the only legally prescribable path.</div>
+  </div>
+  <div class="rsec"><div class="rsec-h"><span class="nu">04</span><h3>Questions for your doctor</h3></div><ul class="qlist" id="questions"></ul></div>
+  <div class="rsec"><div class="rsec-h"><span class="nu">05</span><h3>Baseline labs a doctor may want</h3></div><p class="sub">Educational only — markers clinicians commonly review before considering any of these pathways.</p><div class="labs" id="labs"></div></div>
+
+  <div class="rsec"><div class="rsec-h"><span class="nu">06</span><h3>The rules that apply to you</h3></div>
+    <p class="sub">The same principles I'd want any beginner to hold — with the ones that matter most for your profile flagged.</p>
+    <div id="principles"></div>
+    <div class="foundation" id="foundation"></div>
+  </div>
+
+  <div class="wall">
+    <span class="wtab">Sponsored · Separate from your briefing</span>
+    <div class="adisc"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a86711" stroke-width="2" style="flex:none"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><div><b>Advertising disclosure.</b> These are paid partnerships. We may earn a commission if you use them, at no extra cost to you. We only partner with licensed labs and licensed providers offering legal, FDA-regulated services — never sellers of unapproved or "research-only" compounds. These partners did not write or influence your briefing.</div></div>
+    <div class="relhook" id="relHook"></div>
+    <div class="res2">
+      <div class="res featured">
+        <div class="res-tag">Most relevant to your briefing</div>
+        <h4>The Baseline Panel</h4>
+        <p id="panelLine">The bloodwork your doctor will likely want before considering any of these pathways.</p>
+        <div class="trust"><span class="ts">CLIA-certified lab</span><span class="ts">Results in ~3 days</span><span class="ts">HSA / FSA eligible</span></div>
+        <div class="priceline"><b>$89</b> all-in · no membership · cancel anytime</div>
+        <a class="alink" href="#" onclick="return false">Order the Baseline Panel →</a>
+        <div class="ph">prototype — affiliate placeholder</div>
+      </div>
+      <div class="res">
+        <h4>Find a licensed provider</h4>
+        <p>If your primary care doctor isn't familiar with this area, connect with a vetted, state-licensed clinician working only within FDA-approved options.</p>
+        <div class="trust"><span class="ts">Board-certified</span><span class="ts">Licensed in your state</span></div>
+        <a class="alink alt" href="#" onclick="return false">Browse providers →</a>
+        <div class="ph">prototype — affiliate placeholder</div>
+      </div>
+      <div class="res" id="cgmCard">
+        <h4>At-home metabolic monitor</h4>
+        <p>For fat-loss &amp; metabolic goals: a continuous glucose monitor to bring real data — not guesses — to your appointment.</p>
+        <div class="trust"><span class="ts">FDA-cleared device</span><span class="ts">14-day sensor</span></div>
+        <a class="alink alt" href="#" onclick="return false">See the monitor →</a>
+        <div class="ph">prototype — affiliate placeholder</div>
+      </div>
+    </div>
+    <div class="cnote"><span class="tg">Catchy = relevant</span>The hook above pulls the <i>actual biomarkers your flags referenced</i> into the CTA. Personalization converts harder than any hype line, and it's fully honest — no efficacy promise, no urgency, no endorsement language.</div>
+    <div class="cnote"><span class="tg">Trust = conversion</span>For health buyers, transparency is the hook: certification, all-in price, "cancel anytime." This is the deliberate opposite of the NextMed hidden-fee pattern the FTC penalized.</div>
+    <div class="cnote"><span class="tg">The wall holds</span>Everything catchy lives <i>inside</i> this one labeled, disclosed block. The flags, compound cards, and doctor questions stay ad-free — that separation is what keeps disclosure from becoming deception.</div>
+  </div>
+
+  <div class="paywall">
+    <div class="pw-top"><div><div class="eyebrow">●&nbsp; Optional · take it to your doctor</div><h3 style="font-size:25px">The Clinical PDF Dossier</h3></div><div class="price">$14 <small>one-time · no subscription</small></div></div>
+    <div class="pw-grid">
+      <div><ul class="incl" style="list-style:none">
+        <li><span class="m">✓</span> Everything above as a clean, printable clinical brief</li>
+        <li><span class="m">✓</span> Your caution flags &amp; doctor questions on a one-page summary</li>
+        <li><span class="m">✓</span> A lab-order checklist <i>you</i> control and hand to any provider</li>
+        <li><span class="m">✓</span> Plain-language notes on each compound's regulatory status</li></ul>
+        <div class="excl"><div class="eh">What this fee does <u>not</u> include</div><ul style="list-style:none"><li><span class="m">✕</span> Any medication, lab fees, or consultation costs</li><li><span class="m">✕</span> A prescription, diagnosis, or medical recommendation</li></ul></div>
+      </div>
+      <div class="erow"><input type="text" id="pname" placeholder="Name for your dossier (optional)"><input type="email" id="email" placeholder="you@email.com" inputmode="email">
+        <label class="consent"><input type="checkbox" id="cCollect"><span>I agree to PeptideDecide using my answers to generate and deliver my PDF — including a secure, expiring link I can choose to share with my provider. <i>(Required)</i></span></label>
+        <label class="consent"><input type="checkbox" id="cShare"><span>Optional: you may email me about relevant labs &amp; providers. I can withdraw anytime — leaving this unchecked won't affect my PDF.</span></label>
+        <button class="buy" id="buy" disabled>Get my PDF — $14</button>
+        <div class="pwn">By continuing you agree to our <a href="#" onclick="return false">Consumer Health Data Privacy Policy</a>. Prototype only — no payment is processed.</div>
+      </div>
+    </div>
+    <div class="postbuy" id="postbuy">
+      <div class="pb-h"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg> Your dossier is ready</div>
+      <div class="pb-actions"><button class="pb-btn primary" id="redown">⤓ Download the PDF</button></div>
+      <div class="pb-share">
+        <div class="pb-label">Using a telehealth intake form? Paste this into their “anything else you'd like the provider to know?” box:</div>
+        <textarea id="shareText" readonly rows="6"></textarea>
+        <div class="pb-row"><button class="pb-btn" id="copyShare">Copy briefing + link</button><span class="pb-meta" id="shareMeta"></span></div>
+      </div>
+      <div class="cnote"><span class="tg">Production</span>The download works now (client-side). The shareable <b>expiring link</b> is illustrative here — in production it's minted server-side after payment: PDF stored in object storage, served via an unguessable token URL with a short TTL, <code>noindex</code>, and optional passcode. The required consent above authorizes hosting + link generation.</div>
+    </div>
+    <div class="cnote"><span class="tg">WA MHMDA</span>Two <i>separate, unchecked</i> opt-ins — collect (required) vs. share/market (optional, with withdrawal language) — plus a standalone health-data privacy policy. Mirrors Washington's affirmative, unbundled-consent rule.</div>
+    <div class="cnote"><span class="tg">Data posture</span>This is the <i>only</i> point identifiable data is captured: email (consented), optional name. Health answers were computed in-browser and never stored. Keep it that way — store de-identified aggregates for analytics, never sellable individual health profiles.</div>
+    <div class="cnote"><span class="tg">FTC</span>All-in one-time price with an explicit "not included" list — the opposite of the hidden-fee pattern penalized in the NextMed telehealth case.</div>
+  </div>
+</div>
+
+<div id="nav"><div class="nav-in"><button class="btn-back" id="back">Back</button><button class="btn-next" id="next" disabled>Continue</button></div></div>
+
+<footer>PeptideDecide.com · functional prototype. Educational use only — not medical advice, prescribing, or diagnosis.<br>Toggle <b>Builder view</b> (top right) to see the compliance rationale baked into each section.<br><a href="privacy-and-disclosures.html" style="color:var(--accent-2)">Privacy &amp; Disclosures</a></footer>
 
 <script>
-const CATS=[['all','All'],['metabolic','Metabolic / GLP-1'],['gh','Growth hormone'],['repair','Repair'],['skin','Skin / longevity'],['cognitive','Cognitive / sleep'],['sexual','Sexual / hormonal'],['immune','Immune / other'],['stacks','Stacks']];
-// status: ap|narrow|review|no|research|cosmetic   evidence text   buzz 1-5
-const ITEMS=[
- // METABOLIC
- {n:'Semaglutide',aka:'Ozempic / Wegovy',cat:'metabolic',buzz:5,bz:'Everywhere — the household name of the category.',st:'ap',stl:'Approved',ev:'Strong',d:'A GLP-1 medication that curbs appetite and improves blood sugar. The proven, prescribable corner of "peptides."',c:'Prescription medication; carries a boxed warning re: medullary thyroid cancer / MEN2.',ca:1},
- {n:'Tirzepatide',aka:'Mounjaro / Zepbound',cat:'metabolic',buzz:5,bz:'Rivals semaglutide; often "the stronger one."',st:'ap',stl:'Approved',ev:'Strong',d:'A dual GIP/GLP-1 medication with the strongest weight-loss trial data. Prescription-only.',c:'Same MTC/MEN2 boxed warning as other GLP-1s.',ca:1},
- {n:'Retatrutide',aka:'"triple-G" agonist',cat:'metabolic',buzz:4,bz:'Surging hype as the "next big one."',st:'no',stl:'Investigational',ev:'Trials ongoing',d:'A triple GLP-1/GIP/glucagon agonist in late-stage trials — early data is striking, but it is not yet approved or legally available outside studies.',c:'Investigational only; anything sold now is gray-market and unverified.',ca:0},
- {n:'AOD-9604',aka:'HGH fragment 176-191',cat:'metabolic',buzz:2,bz:'Older fat-loss favorite, fading.',st:'no',stl:'Not approved',ev:'Limited (failed)',d:'A growth-hormone fragment marketed for fat loss that failed to show meaningful efficacy in trials.',c:'Not approved; evidence does not support the fat-loss claims.',ca:0},
- {n:'5-Amino-1MQ',aka:'NNMT inhibitor',cat:'metabolic',buzz:2,bz:'Biohacker fat-loss buzz.',st:'research',stl:'Research-only',ev:'Preclinical',d:'A small molecule (not actually a peptide) studied for fat metabolism — cell/animal data only.',c:'Not a peptide and not approved; no human safety data.',ca:0,np:1},
- // GROWTH HORMONE
- {n:'CJC-1295',aka:'GHRH analog',cat:'gh',buzz:4,bz:'Half of the classic GH stack.',st:'no',stl:'Not approved',ev:'Limited',d:'A long-acting growth-hormone-releasing analog that raises GH and IGF-1.',c:'Not approved; immunogenicity and IGF-1 risks; scrutiny with cancer/thyroid history.',ca:0},
- {n:'Ipamorelin',aka:'GH secretagogue',cat:'gh',buzz:4,bz:'The other half of the classic stack.',st:'review',stl:'Under review',ev:'Limited',d:'Triggers natural GH pulses via the ghrelin receptor. Removed from the FDA ban list in 2024 but still not approved.',c:'Raises IGF-1; limited controlled human data.',ca:2},
- {n:'Sermorelin',aka:'GHRH analog',cat:'gh',buzz:3,bz:'The "classic," longest prescribing history.',st:'review',stl:'Under review',ev:'Limited',d:'A GHRH analog with a longer clinical track record than most; raises GH/IGF-1.',c:'Compounding status constrained; IGF-1 considerations.',ca:2},
- {n:'Tesamorelin',aka:'Egrifta',cat:'gh',buzz:3,bz:'The one with a real FDA approval.',st:'narrow',stl:'Approved (narrow)',ev:'Moderate',d:'A GHRH analog approved specifically for HIV-related fat accumulation; used off-label for body composition.',c:'On-label use is narrow; raises IGF-1.',ca:2},
- {n:'MK-677',aka:'Ibutamoren',cat:'gh',buzz:4,bz:'Hugely popular because it\u2019s oral, not injected.',st:'no',stl:'Not approved',ev:'Moderate',d:'An oral ghrelin mimetic that raises GH and IGF-1 without needles. Technically not a peptide.',c:'Not a peptide; can raise blood sugar and IGF-1; not approved.',ca:0,np:1},
- {n:'IGF-1 LR3',aka:'long-acting IGF-1',cat:'gh',buzz:3,bz:'Bodybuilding circles, "advanced" reputation.',st:'no',stl:'Not approved',ev:'Preclinical',d:'A modified insulin-like growth factor used to drive muscle growth directly. No human efficacy trials for that use.',c:'Potent growth signaling; serious caution with any cancer history.',ca:0},
- {n:'GHRP-2 / GHRP-6',aka:'GH-releasing peptides',cat:'gh',buzz:2,bz:'Older-school GHRPs, still around.',st:'no',stl:'Not approved',ev:'Limited',d:'Earlier-generation ghrelin-receptor peptides that spike GH (GHRP-6 also strongly increases hunger).',c:'Not approved; limited human data.',ca:0},
- {n:'Hexarelin',aka:'GHRP',cat:'gh',buzz:1,bz:'Niche, mostly historical.',st:'no',stl:'Not approved',ev:'Limited',d:'A potent GH-releasing peptide; effect tends to fade with continued use.',c:'Not approved; little modern human data.',ca:0},
- // REPAIR
- {n:'BPC-157',aka:'"Body Protection Compound"',cat:'repair',buzz:5,bz:'The single most-hyped recovery peptide.',st:'review',stl:'Under review',ev:'Preclinical',d:'Marketed for tendon, gut, and soft-tissue healing. Famous online; human evidence is essentially absent.',c:'Banned from U.S. compounding in 2023; under FDA review. Animal data only.',ca:2},
- {n:'TB-500',aka:'Thymosin Beta-4 fragment',cat:'repair',buzz:4,bz:'BPC-157\u2019s usual partner.',st:'review',stl:'Under review',ev:'Preclinical',d:'Promoted for systemic tissue repair; also modulates the immune system. Preclinical evidence only.',c:'Not approved; immune activity matters with autoimmune history.',ca:2},
- {n:'KPV',aka:'\u03b1-MSH fragment',cat:'repair',buzz:2,bz:'Known mainly as the "K" in KLOW.',st:'review',stl:'Under review',ev:'Preclinical',d:'A three-amino-acid anti-inflammatory fragment studied for gut and skin inflammation.',c:'Not approved; on the FDA review list.',ca:2},
- {n:'Larazotide',aka:'gut barrier peptide',cat:'repair',buzz:1,bz:'Obscure; appears in some gut blends.',st:'no',stl:'Investigational',ev:'Moderate (trials)',d:'Studied in celiac disease for "leaky gut" / tight-junction integrity.',c:'Investigational; not approved.',ca:0},
- // SKIN / LONGEVITY
- {n:'GHK-Cu',aka:'copper peptide',cat:'skin',buzz:4,bz:'Big in skincare; injectable buzz rising.',st:'cosmetic',stl:'Topical OK',ev:'Limited',d:'A copper tripeptide that supports collagen. Legitimate and legal as a topical cosmetic; injectable use is a different story.',c:'Injectable forms are banned/under review; topical cosmetic use is fine.',ca:1},
- {n:'MOTS-c',aka:'mitochondrial peptide',cat:'skin',buzz:2,bz:'Longevity/biohacker interest.',st:'research',stl:'Research-only',ev:'Preclinical',d:'A mitochondrial-derived peptide studied for metabolism and aging — cells and animals so far.',c:'No human safety data; not approved.',ca:0},
- {n:'Epitalon',aka:'Epithalon',cat:'skin',buzz:2,bz:'"Telomere" longevity hype.',st:'research',stl:'Research-only',ev:'Minimal',d:'Marketed for longevity and telomeres; credible human evidence is lacking.',c:'Research-only; claims far outrun the data.',ca:0},
- {n:'SS-31',aka:'Elamipretide',cat:'skin',buzz:1,bz:'Niche; advanced longevity circles.',st:'no',stl:'Investigational',ev:'Limited',d:'A mitochondria-targeting peptide in clinical trials for certain rare and age-related conditions.',c:'Investigational; not available legally outside studies.',ca:0},
- {n:'NAD+',aka:'coenzyme',cat:'skin',buzz:3,bz:'Ubiquitous in "longevity" marketing.',st:'research',stl:'Not a drug',ev:'Mixed',d:'A cellular-energy coenzyme (not a peptide) sold as IVs and injections for energy and aging.',c:'Not a peptide; injectable/IV benefit claims are largely unproven.',ca:0,np:1},
- // COGNITIVE / SLEEP
- {n:'Semax',aka:'nootropic peptide',cat:'cognitive',buzz:3,bz:'Popular nootropic, Russian-origin.',st:'no',stl:'Not approved (US)',ev:'Limited',d:'A peptide used in Russia for focus and neuroprotection; not FDA-approved in the U.S.',c:'Not approved in the U.S.; limited Western data.',ca:0},
- {n:'Selank',aka:'anxiolytic peptide',cat:'cognitive',buzz:3,bz:'Semax\u2019s calmer sibling.',st:'no',stl:'Not approved (US)',ev:'Limited',d:'A peptide promoted for calm focus and reduced anxiety; Russian clinical use, not FDA-approved.',c:'Not approved in the U.S.',ca:0},
- {n:'DSIP',aka:'Delta sleep-inducing peptide',cat:'cognitive',buzz:2,bz:'Sleep-stack curiosity.',st:'research',stl:'Research-only',ev:'Limited',d:'Studied for sleep and stress; human evidence is thin and inconsistent.',c:'Research-only; not approved.',ca:0},
- {n:'Cerebrolysin',aka:'neuropeptide mix',cat:'cognitive',buzz:2,bz:'Used abroad for brain injury/stroke.',st:'no',stl:'Not approved (US)',ev:'Mixed',d:'A peptide mixture used in some countries for neurological conditions; not FDA-approved.',c:'Not approved in the U.S.; quality varies.',ca:0},
- {n:'Pinealon / Dihexa',aka:'cognitive peptides',cat:'cognitive',buzz:1,bz:'Deep-cut nootropic names.',st:'research',stl:'Research-only',ev:'Minimal',d:'Obscure peptides marketed for memory and neuroprotection with little to no human data.',c:'Research-only; essentially no human evidence.',ca:0},
- // SEXUAL / HORMONAL
- {n:'PT-141',aka:'Bremelanotide / Vyleesi',cat:'sexual',buzz:3,bz:'Spreading via "male libido" claims online.',st:'narrow',stl:'Approved (narrow)',ev:'Moderate',d:'An approved injectable for low sexual desire in some women; heavily marketed off-label beyond that.',c:'On-label use is narrow; off-label promotion outruns the evidence.',ca:2},
- {n:'Melanotan II',aka:'tanning peptide',cat:'sexual',buzz:3,bz:'"Barbie drug" social-media notoriety.',st:'no',stl:'Not approved',ev:'Limited',d:'Stimulates pigmentation and libido; carries real safety concerns.',c:'Notable safety signals including effects on moles/melanocytes.',ca:0},
- {n:'Melanotan I',aka:'Afamelanotide / Scenesse',cat:'sexual',buzz:1,bz:'Less common than MT-II.',st:'narrow',stl:'Approved (narrow)',ev:'Moderate',d:'An approved implant for a rare light-sensitivity disorder; sometimes used off-label for tanning.',c:'Approved only for a narrow condition.',ca:2},
- {n:'Kisspeptin / Gonadorelin',aka:'reproductive peptides',cat:'sexual',buzz:2,bz:'Rising in TRT/fertility circles.',st:'narrow',stl:'Mixed',ev:'Moderate',d:'Hormonal peptides involved in reproductive signaling; gonadorelin has approved diagnostic uses, often used as a TRT adjunct.',c:'Context-dependent; use only under a prescriber.',ca:2},
- // IMMUNE / OTHER
- {n:'Thymosin alpha-1',aka:'Zadaxin',cat:'immune',buzz:2,bz:'Known in immune/longevity circles.',st:'no',stl:'Not approved (US)',ev:'Moderate',d:'An immune-modulating peptide used in some countries; not FDA-approved in the U.S.',c:'Immune modulation needs care with autoimmune history; not approved here.',ca:2},
- {n:'LL-37',aka:'antimicrobial peptide',cat:'immune',buzz:1,bz:'Niche, "chronic infection" forums.',st:'research',stl:'Research-only',ev:'Preclinical',d:'A natural antimicrobial peptide explored for infection and biofilms; preclinical.',c:'Research-only; can be pro-inflammatory.',ca:0}
+/* ============ DATA ============ */
+const GOALS=[{id:'fatloss',l:'Fat loss / recomp'},{id:'muscle',l:'Muscle recovery'},{id:'joint',l:'Joint & tendon healing'},{id:'cognition',l:'Cognitive focus'},{id:'sleep',l:'Sleep quality'},{id:'skin',l:'Skin & aesthetics'},{id:'longevity',l:'General longevity'},{id:'energy',l:'Energy & fatigue'}];
+const CONDITIONS=[
+  {id:'htn',l:'Hypertension'},
+  {id:'dm',l:'Diabetes / blood sugar',subs:['Type 1','Type 2','Prediabetes','On insulin']},
+  {id:'thyroid',l:'Thyroid disease',subs:['Hashimoto\u2019s','Graves\u2019','Nodular / goiter','History of thyroid eye disease','On replacement']},
+  {id:'autoimmune',l:'Autoimmune condition',subs:['Rheumatoid arthritis','Lupus','MS','Myasthenia gravis','IBD (Crohn\u2019s / UC)','Psoriasis / PsA','Other']},
+  {id:'cancer',l:'Cancer',subs:['Active / in treatment','In remission','Prior history (resolved)']},
+  {id:'mtc',l:'Medullary thyroid cancer / MEN2 (self or family)'},
+  {id:'pancreatitis',l:'Pancreatitis (history)'},
+  {id:'pituitary',l:'Pituitary / growth-hormone disorder'},
+  {id:'pcos',l:'PCOS'},
+  {id:'cvd',l:'Cardiovascular disease'},
+  {id:'clotting',l:'Blood clotting disorder / clots'},
+  {id:'kidney',l:'Kidney disease'},
+  {id:'liver',l:'Liver disease'},
+  {id:'mental',l:'Mental-health condition',subs:['Depression','Anxiety','Bipolar','ADHD','Other']},
+  {id:'eatingdisorder',l:'History of disordered eating'},
+  {id:'none',l:'None of the above'}
+];
+const MEDS=[{id:'biologic',l:'Biologic / immunosuppressant'},{id:'steroid',l:'Corticosteroids'},{id:'glp1',l:'GLP-1 (already taking)'},{id:'thyroidmed',l:'Thyroid replacement'},{id:'anticoag',l:'Anticoagulant / blood thinner'},{id:'bp',l:'Blood-pressure medication'},{id:'hormone',l:'Hormone therapy / TRT'},{id:'diabmed',l:'Diabetes medication'},{id:'psych',l:'Psychiatric medication'},{id:'onco',l:'Oncology / chemo agent'},{id:'nonemed',l:'None of these'}];
+const PRIOR=[{id:'pep_before',l:'Used peptides / GH secretagogues before'},{id:'trt_before',l:'Used hormone therapy / TRT before'},{id:'selfsource',l:'Sourced compounds outside a clinician'},{id:'prior_none',l:'None of these'}];
+const PREG=['Not applicable','Pregnant','Breastfeeding','Trying to conceive'];
+const ACTIVITY=['Sedentary','Light','Moderate','Very active'];
+
+const AI_DISEASES=["Hashimoto's thyroiditis","Graves' disease","Thyroid eye disease","Rheumatoid arthritis","Systemic lupus erythematosus (SLE)","Cutaneous / discoid lupus","Sjögren's syndrome","Systemic sclerosis (scleroderma)","Psoriasis","Psoriatic arthritis","Ankylosing spondylitis","Multiple sclerosis","Myasthenia gravis","Neuromyelitis optica (NMO)","Autoimmune encephalitis","Stiff person syndrome","Guillain-Barré syndrome","CIDP","Type 1 diabetes","Latent autoimmune diabetes (LADA)","Celiac disease","Crohn's disease","Ulcerative colitis","Autoimmune hepatitis","Primary biliary cholangitis","Primary sclerosing cholangitis","Autoimmune pancreatitis","Vitiligo","Alopecia areata","Pernicious anemia","Addison's disease","Pemphigus vulgaris","Bullous pemphigoid","Dermatomyositis","Polymyositis","Inclusion body myositis","Mixed connective tissue disease","Undifferentiated connective tissue disease","Antiphospholipid syndrome (APS)","Behçet's disease","Granulomatosis with polyangiitis (GPA)","Eosinophilic granulomatosis (EGPA)","Microscopic polyangiitis","Polyarteritis nodosa","Giant cell arteritis","Polymyalgia rheumatica","Takayasu arteritis","Reactive arthritis","Juvenile idiopathic arthritis","Goodpasture syndrome","IgA nephropathy","Sarcoidosis","IgG4-related disease","Lichen planus","Lichen sclerosus","Raynaud's phenomenon","Relapsing polychondritis","Cryoglobulinemia","Cold agglutinin disease","Immune thrombocytopenia (ITP)","Autoimmune hemolytic anemia","Hidradenitis suppurativa","Vogt-Koyanagi-Harada","Susac syndrome"];
+
+const OTHER_CONDITIONS=["Asthma","COPD","Sleep apnea","GERD / acid reflux","IBS","Migraine","Epilepsy","Parkinson's disease","Alzheimer's / dementia","Depression","Anxiety disorder","Bipolar disorder","ADHD","PTSD","Osteoarthritis","Osteoporosis","Fibromyalgia","Gout","Chronic fatigue syndrome","Anemia","Hemochromatosis","Sickle cell disease","Hemophilia","Deep vein thrombosis (history)","Pulmonary embolism (history)","Thrombophilia / clotting disorder","Atrial fibrillation","Coronary artery disease","Heart failure","Prior heart attack","Stroke (history)","Peripheral artery disease","High cholesterol","Metabolic syndrome","Fatty liver disease (MASLD)","Cirrhosis","Hepatitis B","Hepatitis C","HIV","Gallstones","Pancreatitis (history)","Kidney stones","Chronic kidney disease","Polycystic kidney disease","Enlarged prostate (BPH)","Erectile dysfunction","Endometriosis","Uterine fibroids","Menopause","Low testosterone","Acromegaly","Growth hormone deficiency","Pituitary tumor","Cushing's syndrome","Hyperparathyroidism","Adrenal insufficiency","Melanoma (history)","Breast cancer (history)","Prostate cancer (history)","Colon cancer (history)","Thyroid cancer (history)","Medullary thyroid cancer","Lymphoma (history)","Leukemia (history)","Insomnia","Restless legs syndrome","Glaucoma","Macular degeneration","Tinnitus","Chronic sinusitis","Allergic rhinitis","Eczema","Rosacea","Acne","Tuberculosis (history)","Long COVID","Chronic pain","Peripheral neuropathy","Carpal tunnel","Herniated disc","Scoliosis","Bariatric surgery (history)","Organ transplant (history)","Recurrent infections","Bleeding disorder"];
+
+const PEPTIDES=[
+  // Metabolic / GLP-1
+  {n:'Semaglutide',a:'Ozempic / Wegovy',g:['fatloss','longevity'],s:'ap',e:'strong',t:['glp1'],d:'A GLP-1 medication that reduces appetite and improves blood-sugar control. The best-evidenced, legally prescribable fat-loss path.',q:'Am I a candidate for an FDA-approved GLP-1, and how would it interact with my conditions?'},
+  {n:'Tirzepatide',a:'Mounjaro / Zepbound',g:['fatloss','longevity'],s:'ap',e:'strong',t:['glp1'],d:'A dual GIP/GLP-1 medication with strong trial data for weight reduction. Prescription-only and FDA-approved.',q:'Between the approved GLP-1 options, which fits my profile best?'},
+  {n:'Retatrutide',a:'"triple-G" agonist',g:['fatloss','longevity'],s:'no',e:'investigational',t:['glp1'],d:'A triple GLP-1/GIP/glucagon agonist in late-stage trials. Early data is striking, but it is not yet approved or legally available outside studies.',q:'Is it wiser to wait for this to finish trials than to source it gray-market now?'},
+  {n:'Tesamorelin',a:'Egrifta',g:['fatloss','muscle'],s:'ap',e:'moderate',t:['gh'],d:'A growth-hormone-releasing analog approved narrowly for HIV-related fat accumulation. Raises IGF-1.',q:'Does its narrow approval and IGF-1 effect make it appropriate for me?'},
+  {n:'AOD-9604',a:'HGH fragment 176-191',g:['fatloss'],s:'no',e:'limited',t:[],d:'A growth-hormone fragment marketed for fat loss that failed to show meaningful efficacy in trials.',q:'Given trials didn\u2019t show it works, why consider it?'},
+  {n:'5-Amino-1MQ',a:'NNMT inhibitor',g:['fatloss','energy','longevity'],s:'no',e:'preclinical',t:[],d:'A small molecule (not actually a peptide) studied for fat metabolism — cell and animal data only.',q:'Since this isn\u2019t even a peptide and has no human data, what would justify it?'},
+  // Growth hormone
+  {n:'CJC-1295',a:'GHRH analog',g:['muscle','fatloss'],s:'no',e:'limited',t:['gh'],d:'A long-acting growth-hormone-releasing analog. Raises GH and IGF-1; not an approved product.',q:'Is there an approved alternative that achieves the same goal more safely?'},
+  {n:'Ipamorelin',a:'GH secretagogue',g:['muscle','fatloss','sleep'],s:'rv',e:'limited',t:['gh'],d:'Stimulates growth-hormone release, raising IGF-1. Gym-popular; removed from the FDA ban list in 2024 but still not approved.',q:'How would raising my IGF-1 interact with my history specifically?'},
+  {n:'Sermorelin',a:'GHRH analog',g:['muscle','sleep','longevity'],s:'rv',e:'limited',t:['gh'],d:'A GH-releasing analog with a longer prescribing history but constrained compounding status. Raises IGF-1.',q:'What is its current legal compounding status, and is the IGF-1 effect safe for me?'},
+  {n:'MK-677',a:'Ibutamoren',g:['muscle','sleep','fatloss'],s:'no',e:'moderate',t:['gh'],d:'An oral ghrelin mimetic (not technically a peptide) that raises GH and IGF-1 without injections.',q:'How would raising my IGF-1 and blood sugar interact with my history?'},
+  {n:'IGF-1 LR3',a:'long-acting IGF-1',g:['muscle'],s:'no',e:'preclinical',t:['gh'],d:'A modified insulin-like growth factor used to drive muscle growth directly. No human efficacy trials for that use.',q:'Given how potent growth signaling is, is this safe with my history?'},
+  {n:'GHRP-2 / GHRP-6',a:'GH-releasing peptides',g:['muscle','fatloss'],s:'no',e:'limited',t:['gh'],d:'Earlier-generation ghrelin-receptor peptides that spike GH; GHRP-6 also sharply increases hunger.',q:'Is there an approved option that achieves this more safely?'},
+  {n:'Hexarelin',a:'GHRP',g:['muscle'],s:'no',e:'limited',t:['gh'],d:'A potent GH-releasing peptide whose effect tends to fade with continued use.',q:'What\u2019s the evidence this does anything durable in humans?'},
+  // Repair
+  {n:'BPC-157',a:'"Body protection compound"',g:['joint','muscle'],s:'rv',e:'preclinical',t:[],d:'Heavily hyped for healing, but human evidence is essentially absent — claims rest on animal studies. Banned from U.S. compounding in 2023; under FDA review.',q:'With no human trial data, what would justify this over established options?'},
+  {n:'TB-500',a:'Thymosin Beta-4 fragment',g:['joint','muscle'],s:'rv',e:'preclinical',t:['immune'],d:'Promoted for tissue repair; evidence is preclinical. Also has immune-modulating activity.',q:'Could its immune-modulating effects interact with my history?'},
+  {n:'KPV',a:'\u03b1-MSH fragment',g:['joint','skin'],s:'rv',e:'preclinical',t:['immune'],d:'A three-amino-acid anti-inflammatory fragment studied for gut and skin inflammation. On the FDA review list.',q:'With no human trials, what would justify this for me?'},
+  {n:'Larazotide',a:'gut-barrier peptide',g:['longevity'],s:'no',e:'limited',t:['immune'],d:'Studied in celiac disease for intestinal permeability ("leaky gut"). Investigational, not approved.',q:'Is there trial evidence relevant to my situation?'},
+  // Skin / longevity
+  {n:'GHK-Cu',a:'Copper peptide',g:['skin','longevity'],s:'rv',e:'limited',t:[],d:'Topical cosmetic use is common and legal; injectable systemic use is unproven and under FDA review.',q:'Is a topical cosmetic version reasonable versus an unproven injectable?'},
+  {n:'MOTS-c',a:'Mitochondrial peptide',g:['energy','longevity','fatloss'],s:'no',e:'preclinical',t:[],d:'A mitochondrial-derived peptide studied for metabolism — almost entirely in cells and animals so far.',q:'Is there any human safety data at all to justify this?'},
+  {n:'Epitalon',a:'Epithalon',g:['longevity','sleep'],s:'no',e:'minimal',t:[],d:'Marketed for longevity and telomeres; credible human evidence is lacking. Research-only.',q:'What independent human data exists, if any?'},
+  {n:'SS-31',a:'Elamipretide',g:['energy','longevity'],s:'no',e:'limited',t:[],d:'A mitochondria-targeting peptide in clinical trials for certain rare and age-related conditions.',q:'Is this only available through a trial right now?'},
+  {n:'NAD+',a:'coenzyme',g:['energy','longevity'],s:'no',e:'mixed',t:[],d:'A cellular-energy coenzyme (not a peptide) sold as IVs/injections for energy and aging; benefit claims are largely unproven.',q:'Does the injectable or IV form have evidence beyond marketing?'},
+  // Cognitive / sleep
+  {n:'Semax',a:'nootropic peptide',g:['cognition'],s:'no',e:'limited',t:[],d:'A peptide used in Russia for focus and neuroprotection; not FDA-approved in the U.S.',q:'Is there Western evidence I should weigh, and is it legal here?'},
+  {n:'Selank',a:'anxiolytic peptide',g:['cognition'],s:'no',e:'limited',t:[],d:'Promoted for calm focus and reduced anxiety; Russian clinical use, not FDA-approved.',q:'How does this compare to approved options for anxiety or focus?'},
+  {n:'DSIP',a:'Delta sleep-inducing peptide',g:['sleep'],s:'no',e:'limited',t:[],d:'Studied for sleep and stress; human evidence is thin and inconsistent.',q:'Is there any reliable human sleep data behind this?'},
+  {n:'Cerebrolysin',a:'neuropeptide mix',g:['cognition'],s:'no',e:'mixed',t:[],d:'A peptide mixture used abroad for neurological conditions; not FDA-approved in the U.S.',q:'Is this appropriate or even legal for my situation in the U.S.?'},
+  {n:'Pinealon / Dihexa',a:'cognitive peptides',g:['cognition'],s:'no',e:'minimal',t:[],d:'Obscure peptides marketed for memory and neuroprotection with little to no human data.',q:'Is there any human evidence at all for these?'},
+  // Sexual / hormonal
+  {n:'PT-141',a:'Bremelanotide / Vyleesi',g:['energy'],s:'ap',e:'moderate',t:[],d:'An approved injectable for low sexual desire in some women. Often marketed well beyond its approval.',q:'Is there an on-label, evidence-based reason to consider this?'},
+  {n:'Melanotan II',a:'Tanning peptide',g:['skin'],s:'no',e:'limited',t:['melano'],d:'Stimulates pigmentation and libido; carries notable safety concerns including effects on moles/melanocytes.',q:'Given the safety signals, is there any reason this belongs in the conversation?'},
+  {n:'Melanotan I',a:'Afamelanotide / Scenesse',g:['skin'],s:'ap',e:'moderate',t:['melano'],d:'An approved implant for a rare light-sensitivity disorder; sometimes used off-label for tanning.',q:'Its approval is narrow — is there a legitimate reason it applies to me?'},
+  {n:'Kisspeptin / Gonadorelin',a:'reproductive peptides',g:['energy','muscle'],s:'rv',e:'moderate',t:[],d:'Hormonal peptides in reproductive signaling; gonadorelin has approved diagnostic uses and is often used as a TRT adjunct.',q:'Is there an on-label, monitored use that fits me?'},
+  // Immune / other
+  {n:'Thymosin alpha-1',a:'Zadaxin',g:['longevity'],s:'no',e:'moderate',t:['immune'],d:'An immune-modulating peptide used in some countries; not FDA-approved in the U.S.',q:'Would modulating my immune system be safe given my history?'},
+  {n:'LL-37',a:'antimicrobial peptide',g:['longevity'],s:'no',e:'preclinical',t:['immune'],d:'A natural antimicrobial peptide explored for infection and biofilms; preclinical, and can be pro-inflammatory.',q:'Given it can be pro-inflammatory, is this safe with my history?'}
 ];
 const STACKS=[
- {n:'Wolverine',recipe:'BPC-157 + TB-500',buzz:5,bz:'The famous one — named after the X-Men healer.',st:'review',stl:'Under review',ev:'Preclinical',d:'The signature recovery stack: a local-healing peptide plus a systemic one. No human trials exist for the combination.',c:'Both components are unapproved/under review; combining unapproved compounds multiplies the unknowns and the sterility risk.',ca:2},
- {n:'GLOW',recipe:'BPC-157 + TB-500 + GHK-Cu',buzz:4,bz:'Recovery + skin; terminology varies by source.',st:'review',stl:'Under review',ev:'Preclinical',d:'Wolverine plus the copper peptide for collagen/skin. (Confusingly, some compounding pharmacies use "GLOW/Klow" for a different GHK-Cu + glutathione + vitamin C blend — always confirm what\u2019s actually in it.)',c:'No human RCTs as a blend; injectable GHK-Cu is itself banned/under review.',ca:2},
- {n:'KLOW',recipe:'GLOW + KPV',buzz:3,bz:'The "K" is KPV, added for inflammation.',st:'review',stl:'Under review',ev:'Preclinical',d:'GLOW with an anti-inflammatory fragment added — pitched for inflammatory/autoimmune-adjacent goals.',c:'Four unapproved compounds in one vial; especially fraught with autoimmune history. No human trials.',ca:2},
- {n:'CJC-1295 + Ipamorelin',recipe:'GHRH analog + GH secretagogue',buzz:5,bz:'The default "GH stack" beginners are pointed to.',st:'no',stl:'Mostly not approved',ev:'Limited',d:'The most common growth-hormone pairing, run for muscle, fat loss, and sleep.',c:'Raises IGF-1; real caution with cancer/thyroid history.',ca:0},
- {n:'"Phoenix"',recipe:'no standard formula',buzz:2,bz:'Usually a brand/vendor name, not a defined stack.',st:'no',stl:'Varies',ev:'N/A',d:'Unlike Wolverine/GLOW/KLOW, "Phoenix" is not a standardized community formula — it\u2019s typically a seller\u2019s brand name (and "Phoenixin" is a separate research peptide entirely). If you see it, ask exactly what\u2019s in the vial.',c:'No fixed composition — treat any "Phoenix" product as unverified until the contents are confirmed.',ca:1}
+  {n:'Wolverine',recipe:'BPC-157 + TB-500',g:['joint','muscle'],s:'rv',e:'preclinical',d:'The signature recovery stack — a local-healing peptide plus a systemic one. No human trials exist for the combination.',c:'Both parts are unapproved/under review; combining them multiplies the unknowns and the sterility risk.',q:'Is there any human evidence for combining these, versus treating my injury the established way?'},
+  {n:'GLOW',recipe:'BPC-157 + TB-500 + GHK-Cu',g:['joint','muscle','skin'],s:'rv',e:'preclinical',d:'Wolverine plus the copper peptide for collagen and skin. (Some pharmacies use "GLOW/Klow" for a different GHK-Cu + glutathione + vitamin C blend — confirm the contents.)',c:'No human RCTs as a blend; injectable GHK-Cu is itself banned/under review.',q:'What exactly is in the blend being offered to me, and what\u2019s the evidence for it?'},
+  {n:'KLOW',recipe:'GLOW + KPV',g:['joint','skin','longevity'],s:'rv',e:'preclinical',d:'GLOW with an anti-inflammatory fragment added, pitched for inflammatory or autoimmune-adjacent goals.',c:'Four unapproved compounds in one vial — especially fraught with autoimmune history.',q:'Given my history, is putting four unapproved compounds in one injection something you\u2019d ever advise?'},
+  {n:'CJC-1295 + Ipamorelin',recipe:'GHRH analog + GH secretagogue',g:['muscle','fatloss'],s:'no',e:'limited',d:'The most common growth-hormone pairing, run for muscle, fat loss, and sleep.',c:'Raises IGF-1 — real caution with cancer or thyroid history.',q:'How would raising my IGF-1 with this combo interact with my history?'},
+  {n:'"Phoenix"',recipe:'no standard formula',g:[],s:'no',e:'n/a',d:'Unlike Wolverine/GLOW/KLOW, "Phoenix" isn\u2019t a standardized formula — it\u2019s usually a seller\u2019s brand name (and "Phoenixin" is a separate research peptide). If you see it, ask exactly what\u2019s in the vial.',c:'No fixed composition — treat any "Phoenix" product as unverified until contents are confirmed.',q:'This name doesn\u2019t map to a known formula — what specific compounds are actually in it?'}
 ];
 
-let activeCat='all',q='';
-const catsEl=document.getElementById('cats');
-CATS.forEach((c,i)=>{const b=document.createElement('div');b.className='cat'+(i===0?' on':'');b.textContent=c[1];b.onclick=()=>{document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));b.classList.add('on');activeCat=c[0];render();};catsEl.appendChild(b);});
-document.getElementById('search').addEventListener('input',e=>{q=e.target.value.toLowerCase().trim();render();});
+/* ============ STATE ============ */
+const S={goals:new Set(),sex:'',unit:'imp',conditions:new Set(),subs:{},otherConditions:new Set(),aiOther:new Set(),meds:new Set(),medsFree:'',prior:new Set(),preg:'',activity:'',bmi:null,curious:new Set()};
 
-function heat(n){let h='<span class="heat">';for(let i=0;i<5;i++)h+='<span class="pip'+(i<n?' on':'')+'"></span>';return h+'</span>';}
-function badges(st,stl,ev){const cls=st==='ap'||st==='narrow'?'b-ap':st==='review'?'b-rv':st==='cosmetic'?'b-cos':'b-no';return `<span class="bdg ${cls}">${stl}</span><span class="bdg b-ev">${ev} evidence</span>`;}
-function caut(c,ca){return `<div class="it-c${ca?' amber':''}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span>${c}</span></div>`;}
-function match(o){if(q){const hay=(o.n+' '+(o.aka||'')+' '+(o.recipe||'')+' '+o.d).toLowerCase();if(!hay.includes(q))return false;}return true;}
+const $=id=>document.getElementById(id);
+function chip(parent,label,onToggle,acc){const c=document.createElement('div');c.className='chip'+(acc?' acc':'');c.textContent=label;c.onclick=()=>{c.classList.toggle('on');onToggle(c.classList.contains('on'),c);};parent.appendChild(c);return c;}
+function card(parent,label){const c=document.createElement('div');c.className='selcard';c.innerHTML=`<span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>${label}</span>`;parent.appendChild(c);return c;}
 
-function render(){
-  const showSingles=activeCat!=='stacks';
-  const showStacks=activeCat==='all'||activeCat==='stacks';
-  const sw=document.getElementById('singlesWrap'),stw=document.getElementById('stacksWrap');
-  let any=false;
-  // singles
-  if(showSingles){
-    const list=ITEMS.filter(o=>(activeCat==='all'||o.cat===activeCat)&&match(o)).sort((a,b)=>b.buzz-a.buzz);
-    if(list.length){any=true;
-      sw.innerHTML='<div class="sech">Single peptides</div><div class="grid">'+list.map(o=>`
-        <div class="item"><div class="it-top"><div class="it-n">${o.n}${o.np?'<span class="np">not a peptide</span>':''}<small>${o.aka}</small></div>${heat(o.buzz)}</div>
-        <div class="it-badges">${badges(o.st,o.stl,o.ev)}</div>
-        <div class="it-d">${o.d}</div>
-        <div class="it-buzz">${o.bz}</div>
-        ${caut(o.c,o.ca)}</div>`).join('')+'</div>';
-    } else sw.innerHTML='';
-  } else sw.innerHTML='';
-  // stacks
-  if(showStacks){
-    const list=STACKS.filter(match).sort((a,b)=>b.buzz-a.buzz);
-    if(list.length){any=true;
-      stw.innerHTML='<div class="sech">Named stacks</div><div class="grid">'+list.map(o=>`
-        <div class="item stack"><div class="it-top"><div class="it-n">${o.n}</div>${heat(o.buzz)}</div>
-        <div class="recipe">${o.recipe}</div>
-        <div class="it-badges">${badges(o.st,o.stl,o.ev)}</div>
-        <div class="it-d">${o.d}</div>
-        <div class="it-buzz">${o.bz}</div>
-        ${caut(o.c,o.ca)}</div>`).join('')+'</div>';
-    } else stw.innerHTML='';
-  } else stw.innerHTML='';
-  document.getElementById('empty').style.display=any?'none':'block';
+GOALS.forEach(g=>chip($('goals'),g.l,on=>{on?S.goals.add(g.id):S.goals.delete(g.id);validate();},true));
+$('sex').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$('sex').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');S.sex=c.dataset.v;validate();});
+
+CONDITIONS.forEach(cd=>{const c=card($('conditions'),cd.l);c.onclick=()=>{
+  if(cd.id==='none'){S.conditions.clear();$('conditions').querySelectorAll('.selcard').forEach(x=>x.classList.remove('on'));c.classList.add('on');S.conditions.add('none');}
+  else{const ne=[...$('conditions').children].find(x=>x.textContent.includes('None of'));if(ne)ne.classList.remove('on');S.conditions.delete('none');
+    c.classList.toggle('on');c.classList.contains('on')?S.conditions.add(cd.id):S.conditions.delete(cd.id);}
+  validate();};});
+
+MEDS.forEach(m=>{const c=card($('meds'),m.l);c.onclick=()=>{
+  if(m.id==='nonemed'){S.meds.clear();$('meds').querySelectorAll('.selcard').forEach(x=>x.classList.remove('on'));c.classList.add('on');S.meds.add('nonemed');}
+  else{const ne=[...$('meds').children].find(x=>x.textContent.includes('None of'));if(ne)ne.classList.remove('on');S.meds.delete('nonemed');
+    c.classList.toggle('on');c.classList.contains('on')?S.meds.add(m.id):S.meds.delete(m.id);}};});
+$('medsFree').oninput=e=>S.medsFree=e.target.value;
+
+PRIOR.forEach(p=>{const c=card($('prior'),p.l);c.onclick=()=>{
+  if(p.id==='prior_none'){S.prior.clear();$('prior').querySelectorAll('.selcard').forEach(x=>x.classList.remove('on'));c.classList.add('on');S.prior.add('prior_none');}
+  else{const ne=[...$('prior').children].find(x=>x.textContent.includes('None of'));if(ne)ne.classList.remove('on');S.prior.delete('prior_none');
+    c.classList.toggle('on');c.classList.contains('on')?S.prior.add(p.id):S.prior.delete(p.id);}};});
+PREG.forEach(p=>chip($('preg'),p,(on,el)=>{$('preg').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));if(on)el.classList.add('on');S.preg=on?p:'';}));
+ACTIVITY.forEach(a=>chip($('activity'),a,(on,el)=>{$('activity').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));if(on)el.classList.add('on');S.activity=on?a:'';}));
+
+/* ============ AUTOCOMPLETE ============ */
+function autocomplete(input,listEl,tagsEl,suggestions,store,onChange){
+  function render(){tagsEl.innerHTML='';store.forEach(v=>{const t=document.createElement('span');t.className='ac-tag';t.innerHTML=`<span>${v}</span><button aria-label="remove">×</button>`;t.querySelector('button').onclick=()=>{store.delete(v);render();onChange&&onChange();};tagsEl.appendChild(t);});}
+  function close(){listEl.classList.remove('show');listEl.innerHTML='';}
+  function add(v){v=(v||'').trim();if(!v)return;store.add(v);input.value='';close();render();onChange&&onChange();}
+  input.addEventListener('input',()=>{const q=input.value.toLowerCase().trim();if(!q){close();return;}
+    const m=suggestions.filter(s=>s.toLowerCase().includes(q)&&!store.has(s)).slice(0,8);
+    listEl.innerHTML='';if(!m.length){listEl.innerHTML=`<div class="ac-item">Add "<b>${input.value}</b>" <span class="add">+</span></div>`;listEl.firstChild.onclick=()=>add(input.value);listEl.classList.add('show');return;}
+    m.forEach(s=>{const d=document.createElement('div');d.className='ac-item';d.innerHTML=`${s}<span class="add">+</span>`;d.onclick=()=>add(s);listEl.appendChild(d);});
+    listEl.classList.add('show');});
+  input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const first=listEl.querySelector('.ac-item');first?first.click():add(input.value);}});
+  input.addEventListener('blur',()=>setTimeout(close,180));
+  render();
 }
-render();
+autocomplete($('otherCondInput'),$('otherCondList'),$('otherCondTags'),OTHER_CONDITIONS,S.otherConditions,validate);
+const COMPOUND_NAMES=[...PEPTIDES.map(p=>p.n),...STACKS.map(s=>s.n.replace(/"/g,''))];
+autocomplete($('curiousInput'),$('curiousList'),$('curiousTags'),COMPOUND_NAMES,S.curious,null);
+
+/* ============ BMI ============ */
+$('unit').querySelectorAll('button').forEach(b=>b.onclick=()=>{$('unit').querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');S.unit=b.dataset.u;$('impIn').style.display=S.unit==='imp'?'grid':'none';$('metIn').style.display=S.unit==='met'?'grid':'none';calcBMI();});
+['ft','in','lb','cm','kg'].forEach(id=>$(id).addEventListener('input',()=>{calcBMI();validate();}));
+function calcBMI(){let b=null;
+  if(S.unit==='imp'){const t=(+$('ft').value)*12+(+$('in').value),lb=+$('lb').value;if(t>0&&lb>0)b=lb/(t*t)*703;}
+  else{const cm=+$('cm').value,kg=+$('kg').value;if(cm>0&&kg>0)b=kg/((cm/100)**2);}
+  const el=$('bmi');
+  if(b&&isFinite(b)){S.bmi=b;let t,c,bg;
+    if(b<18.5){t='Underweight';c='#a86711';bg='var(--amber-soft)';}else if(b<25){t='Healthy';c='var(--accent-2)';bg='var(--accent-soft)';}else if(b<30){t='Overweight';c='#a86711';bg='var(--amber-soft)';}else{t='Obese range';c='var(--red)';bg='var(--red-soft)';}
+    el.innerHTML=`<span class="n">${b.toFixed(1)}</span><span class="t" style="color:${c};background:${bg}">${t}</span>`;
+  }else{S.bmi=null;el.innerHTML='<span class="ph">Enter height &amp; weight for your approximate BMI.</span>';}
+}
+
+/* ============ FLOW ============ */
+const baseFlow=['step-welcome','step-goals','step-bio','step-conditions','step-branch'];
+let flow=[...baseFlow],pos=0,deepened=false;
+function relevantSubConditions(){return CONDITIONS.filter(c=>c.subs&&S.conditions.has(c.id));}
+function enrichFlow(){const f=[];if(relevantSubConditions().length)f.push('step-specifics');f.push('step-meds','step-context');return f;}
+function show(i){document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));const id=flow[i];$(id).classList.add('active');pos=i;window.scrollTo({top:0,behavior:'smooth'});
+  const isWelcome=id==='step-welcome',isBranch=id==='step-branch';
+  $('progressWrap').style.display=isWelcome?'none':'block';$('progressBar').style.width=((i)/(flow.length-1)*100)+'%';
+  $('nav').style.display=isBranch?'none':'flex';$('back').style.visibility=i===0?'hidden':'visible';
+  $('next').textContent=(i===flow.length-1)?'Build my prep sheet':'Continue';
+  if(id==='step-specifics')renderSpecifics();
+  if(id==='step-context')$('pregWrap').style.display=(S.sex==='Female')?'block':'none';
+  validate();}
+function validate(){const id=flow[pos];let ok=true;
+  if(id==='step-welcome')ok=$('age18').checked&&(+$('age').value>=18);
+  else if(id==='step-goals')ok=S.goals.size>0;
+  else if(id==='step-bio')ok=S.sex&&S.bmi!=null;
+  else if(id==='step-conditions')ok=S.conditions.size>0||S.otherConditions.size>0;
+  $('next').disabled=!ok;}
+['age18','age'].forEach(id=>$(id).addEventListener('input',validate));$('age18').addEventListener('change',validate);
+$('next').onclick=()=>{if($('next').disabled)return;if(pos===flow.length-1){generate();return;}show(pos+1);};
+$('back').onclick=()=>{if(pos>0)show(pos-1);};
+$('branchFree').onclick=()=>{deepened=false;flow=[...baseFlow];generate();};
+$('branchDeep').onclick=()=>{deepened=true;flow=[...baseFlow,...enrichFlow()];show(pos+1);};
+
+function renderSpecifics(){const body=$('specificsBody');body.innerHTML='';
+  relevantSubConditions().forEach(cd=>{const g=document.createElement('div');g.className='subgroup';g.innerHTML=`<h4>${cd.l}</h4>`;
+    const chips=document.createElement('div');chips.className='chips';S.subs[cd.id]=S.subs[cd.id]||new Set();
+    cd.subs.forEach(s=>{const c=document.createElement('div');c.className='chip'+(S.subs[cd.id].has(s)?' on acc':'');c.textContent=s;
+      c.onclick=()=>{c.classList.toggle('on');c.classList.toggle('acc');c.classList.contains('on')?S.subs[cd.id].add(s):S.subs[cd.id].delete(s);
+        if(cd.id==='autoimmune'&&s==='Other'){const ai=$('aiOtherWrap');if(ai)ai.style.display=c.classList.contains('on')?'block':'none';}};
+      chips.appendChild(c);});
+    g.appendChild(chips);
+    if(cd.id==='autoimmune'){const wrap=document.createElement('div');wrap.id='aiOtherWrap';wrap.className='ac';wrap.style.display=S.subs['autoimmune'].has('Other')?'block':'none';
+      wrap.innerHTML=`<label class="ac-label" style="margin-top:6px">Search all autoimmune conditions</label><input type="text" id="aiOtherInput" placeholder="Start typing… e.g. Sjögren's, vasculitis, scleroderma"><div class="ac-list" id="aiOtherList"></div><div class="ac-tags" id="aiOtherTags"></div>`;
+      g.appendChild(wrap);}
+    body.appendChild(g);});
+  if($('aiOtherInput'))autocomplete($('aiOtherInput'),$('aiOtherList'),$('aiOtherTags'),AI_DISEASES,S.aiOther);
+}
+
+/* ============ HELPERS ============ */
+const has=c=>S.conditions.has(c);const sub=(c,v)=>S.subs[c]&&S.subs[c].has(v);const med=m=>S.meds.has(m);
+function otherText(){return [...S.otherConditions].join(' | ').toLowerCase();}
+function otherHas(){for(let i=0;i<arguments.length;i++){if(otherText().includes(arguments[i]))return true;}return false;}
+function anyAutoimmune(){return has('autoimmune')||S.aiOther.size>0;}
+function neuroAutoimmune(){const t=[...S.aiOther].join(' ').toLowerCase();return sub('autoimmune','Myasthenia gravis')||sub('autoimmune','MS')||/myasthenia|multiple sclerosis|neuromyelitis|guillain|cidp|encephalitis|stiff person/.test(t);}
+
+/* ============ GENERATE ============ */
+let REPORT={};
+function generate(){buildSnaps();buildFlags();buildPeptides();buildStacks();buildQuestions();buildLabs();buildSponsored();buildBottomLine();buildPrinciples();
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  $('wizard').style.display='none';$('nav').style.display='none';$('progressWrap').style.display='none';
+  $('deepenCta').style.display=deepened?'none':'flex';
+  $('results').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+$('deepenBtn').onclick=()=>{deepened=true;flow=[...baseFlow,...enrichFlow()];$('results').style.display='none';$('wizard').style.display='block';show(baseFlow.length);};
+
+function buildSnaps(){const el=$('snaps');el.innerHTML='';const add=(v,l)=>{const d=document.createElement('div');d.className='snap';d.innerHTML=`<b>${v}</b><span>${l}</span>`;el.appendChild(d);};
+  add($('age').value||'—','Age');add(S.bmi?S.bmi.toFixed(1):'—','Approx BMI');add(S.goals.size,'Goals');
+  add((has('none')?0:S.conditions.size)+S.otherConditions.size,'Conditions');
+  if(deepened)add(med('nonemed')?0:S.meds.size,'Med groups');}
+
+function buildFlags(){const el=$('flags');el.innerHTML='';const F=[],seen=new Set();
+  const add=(key,lv,t,b)=>{if(seen.has(key))return;seen.add(key);F.push([lv,t,b]);};
+  if(has('cancer')){const a=sub('cancer','Active / in treatment'),r=sub('cancer','In remission');
+    add('cancer','high','Growth-hormone-stimulating compounds',(a?'With cancer in active treatment, ':r?'With cancer in remission, ':'Given a cancer history, ')+'anything that raises IGF-1 (GH secretagogues like ipamorelin, CJC-1295, sermorelin, tesamorelin) is a priority discussion, because IGF-1 is a growth-signaling pathway. The single most important flag to raise.');}
+  if(has('mtc')||otherHas('medullary thyroid'))add('mtc','high','Medullary thyroid cancer / MEN2 & GLP-1 boxed warning','FDA-approved GLP-1 medications carry a boxed warning against use with a personal or family history of medullary thyroid carcinoma or MEN2 syndrome. This is a hard contraindication conversation — raise it before any GLP-1 discussion.');
+  if(has('pancreatitis')||otherHas('pancreatitis'))add('pancreatitis','high','Pancreatitis history & GLP-1s','GLP-1 medications (and several others) list pancreatitis as a safety concern. Flag this history clearly before any GLP-1 is considered.');
+  if(has('pituitary')||otherHas('acromegaly','growth hormone','pituitary'))add('pituitary','high','Pituitary / GH-axis disorder','Your growth-hormone axis is already a clinical matter — any GH-affecting compound must run through your endocrinologist first.');
+  if(anyAutoimmune()||med('biologic')||med('steroid')||otherHas('transplant')){let ex='';if(neuroAutoimmune())ex=' A neuromuscular autoimmune condition in particular should be coordinated across your neurologist and other specialists.';
+    add('immune','high','Immune-modulating peptides','Compounds that modulate immune function (e.g., thymosin alpha-1, TB-500) warrant careful coordination'+((med('biologic')||med('steroid'))?', especially alongside your immunosuppressive medication':'')+'.'+ex);}
+  if(has('thyroid')){const ted=sub('thyroid','History of thyroid eye disease')||sub('thyroid','Graves\u2019');
+    add('thyroid',ted?'high':'med','IGF-1 & thyroid/eye considerations','IGF-1-raising compounds deserve extra scrutiny with thyroid disease'+(ted?', and especially with Graves\u2019 / thyroid eye involvement, where the IGF-1 receptor pathway is directly relevant':'')+'. Loop in your endocrinologist'+(ted?' and ophthalmologist':'')+'.');}
+  if(has('eatingdisorder'))add('ed','high','Disordered-eating history','With a history of disordered eating, fat-loss compounds deserve real caution. The safest path is a clinician who can support your goals without reinforcing harmful patterns — please bring this history forward early in the conversation.');
+  if(has('dm'))add('dm','med','Growth hormone & blood sugar','GH-raising compounds can worsen insulin sensitivity. If fat loss is the goal, the approved GLP-1 pathway is usually the more rational starting point.');
+  if(has('pcos'))add('pcos','ok','PCOS & metabolic goals','For PCOS with fat-loss or metabolic goals, the FDA-approved GLP-1 pathway is frequently relevant and worth raising with your doctor first.');
+  if(has('cvd')||has('htn'))add('cv','med','Cardiovascular & blood-pressure load','Some stimulatory or fluid-shifting compounds can affect blood pressure and cardiovascular load. Bring current readings and your medication list.');
+  if(has('clotting')||med('anticoag')||otherHas('thrombo','clot','embolism','deep vein'))add('clot','med','Clotting & injection considerations','A clotting disorder, clot history, or blood thinner adds bleeding and vascular considerations to raise before any injectable.');
+  if(has('kidney')||has('liver'))add('organ','med','Clearance & dosing oversight','Reduced kidney or liver function changes how compounds are processed — any conversation needs a clinician accounting for organ function.');
+  if(has('mental')||med('psych'))add('mental','med','Mental-health considerations','Some compounds, and interactions with psychiatric medications, can affect mood or sleep. Keep your prescriber in the loop.');
+  if(otherHas('melanoma'))add('melanoma','med','Melanoma history & pigment peptides','With a melanoma history, avoid tanning peptides outright and treat any growth-signaling compound cautiously — flag this to your dermatologist.');
+  if(otherHas('sleep apnea'))add('apnea','med','Sleep apnea & growth hormone','GH-raising compounds can worsen sleep apnea. Flag this before any GH-affecting option.');
+  if(med('glp1'))add('glp1','ok','You\u2019re already on the approved pathway','Since you\u2019re taking a GLP-1, the productive conversation is optimizing that approved therapy — not stacking experimental compounds on top.');
+  if(S.preg==='Pregnant'||S.preg==='Breastfeeding'||S.preg==='Trying to conceive')add('preg','high','Pregnancy / conception','Essentially none of these compounds are studied or appropriate during pregnancy, breastfeeding, or active conception. A broad "not now."');
+  if(S.prior.has('selfsource'))add('self','med','Prior self-sourcing','If you\u2019ve obtained compounds outside a clinician before, the most valuable step now is bringing exactly what you used to a licensed provider so it\u2019s on the record and monitored.');
+  if(S.goals.has('skin'))add('skin','med','Pigment / tanning peptides','Tanning peptides like Melanotan II carry safety concerns involving moles and melanocytes. For skin goals, prioritize evidence-based dermatology.');
+  if(S.otherConditions.size){const noted=[...S.otherConditions].join(', ');add('noted','ok','Other conditions noted for your doctor','We\u2019ve recorded: '+noted+'. These print on your brief so your physician sees your full picture, even where they don\u2019t change a specific flag here.');}
+  if(!F.length)add('none','ok','No specific red flags from your history','You didn\u2019t select conditions that trigger the highest-caution flags. That doesn\u2019t mean these compounds are appropriate — most still carry the regulatory and evidence problems below — only that there\u2019s no condition-specific contraindication to start from.');
+  // order: high, med, ok
+  const ord={high:0,med:1,ok:2};F.sort((a,b)=>ord[a[0]]-ord[b[0]]);REPORT.flags=F.map(x=>({lv:x[0],t:x[1],b:x[2]}));
+  F.forEach(([lv,t,b])=>{const d=document.createElement('div');d.className='flag '+lv;d.innerHTML=`<div class="ft">${t}<span class="lv">${lv==='high'?'High priority':lv==='med'?'Discuss':'Note'}</span></div><p>${b}</p>`;el.appendChild(d);});
+}
+
+function curiousList(){return [...S.curious].map(x=>x.toLowerCase());}
+function buildPeptides(){const el=$('peptides');el.innerHTML='';REPORT.peps=[];const ord={ap:0,rv:1,no:2};
+  const cur=curiousList();
+  const isPin=p=>cur.includes(p.n.toLowerCase())||cur.includes((p.a||'').toLowerCase());
+  let list=PEPTIDES.filter(p=>p.g.some(g=>S.goals.has(g)));
+  PEPTIDES.forEach(p=>{if(isPin(p)&&!list.includes(p))list.push(p);});
+  if(!list.length)list=PEPTIDES.slice();
+  list.sort((a,b)=>{const pa=isPin(a)?0:1,pb=isPin(b)?0:1;if(pa!==pb)return pa-pb;return ord[a.s]-ord[b.s];});
+  list.forEach(p=>{const pin=isPin(p);let warn=null,good=false;
+    if(p.t.includes('gh')&&(has('cancer')||has('thyroid')||has('dm')||has('pituitary')||has('mtc')))warn='Flagged for you: raises IGF-1, which intersects with your selected history.';
+    if(p.t.includes('immune')&&(anyAutoimmune()||med('biologic')||med('steroid')))warn='Flagged for you: immune-modulating activity needs cross-specialty review given your history.';
+    if(p.t.includes('melano'))warn='Flagged: notable safety concerns regardless of profile'+(otherHas('melanoma')?' — and a clear no with a melanoma history.':'.');
+    if(p.t.includes('glp1')&&(has('mtc')||otherHas('medullary thyroid')||has('pancreatitis')))warn='Flagged for you: your history intersects with a GLP-1 safety warning — a required discussion point.';
+    if(p.t.includes('glp1')&&med('glp1')&&!warn)good=true;else if(p.s==='ap'&&!warn)good=true;
+    const sb=p.s==='ap'?'<span class="bdg b-ap">FDA-approved</span>':p.s==='rv'?'<span class="bdg b-rv">Under FDA review</span>':'<span class="bdg b-no">Not approved</span>';
+    const d=document.createElement('div');d.className='pep'+(warn?' flagged':'')+(pin?' pinned':'');
+    d.innerHTML=`${pin?'<div class="pep-pin">You asked about this</div>':''}<div class="pep-t"><div class="pep-n">${p.n}<small>${p.a}</small></div><div class="pep-b">${sb}<span class="bdg b-ev">${p.e} evidence</span></div></div><div class="pep-d">${p.d}</div>${warn?`<div class="pep-note warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10.3 3.9 1.8 18A2 2 0 0 0 3.5 21h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>${warn}</span></div>`:''}${good?`<div class="pep-note good"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg><span>${med('glp1')&&p.t.includes('glp1')?'You may already be on this class — a discussion about optimizing it.':'A legally prescribable medication your doctor can discuss today.'}</span></div>`:''}<div class="pep-ask"><b>Ask your doctor:</b> "${p.q}"</div>`;
+    REPORT.peps.push({n:p.n,a:p.a,status:(p.s==='ap'?'FDA-approved':p.s==='rv'?'Under FDA review':'Not approved'),e:p.e,warn:warn,ask:p.q,pin:pin});el.appendChild(d);});
+}
+
+function buildStacks(){const el=$('stacks');el.innerHTML='';REPORT.stacks=[];const ord={ap:0,rv:1,no:2};
+  const cur=curiousList();
+  const isPin=s=>cur.includes(s.n.toLowerCase())||cur.includes(s.n.replace(/"/g,'').toLowerCase());
+  let list=STACKS.filter(s=>s.g.length&&s.g.some(g=>S.goals.has(g)));
+  STACKS.forEach(s=>{if(isPin(s)&&!list.includes(s))list.push(s);});
+  // always include the Phoenix literacy note
+  const phx=STACKS.find(s=>s.n.includes('Phoenix'));if(phx&&!list.includes(phx))list.push(phx);
+  list.sort((a,b)=>{const pa=isPin(a)?0:1,pb=isPin(b)?0:1;if(pa!==pb)return pa-pb;return ord[a.s]-ord[b.s];});
+  $('stacksBlock').style.display=list.length?'block':'none';
+  list.forEach(s=>{const pin=isPin(s);
+    const sb=s.s==='ap'?'<span class="bdg b-ap">FDA-approved</span>':s.s==='rv'?'<span class="bdg b-rv">Under FDA review</span>':'<span class="bdg b-no">Not approved</span>';
+    const d=document.createElement('div');d.className='pep stack'+(pin?' pinned':'');
+    d.innerHTML=`${pin?'<div class="pep-pin">You asked about this</div>':''}<div class="pep-t"><div class="pep-n">${s.n}<small class="recipe">${s.recipe}</small></div><div class="pep-b">${sb}<span class="bdg b-ev">${s.e} evidence</span></div></div><div class="pep-d">${s.d}</div><div class="pep-note warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M10.3 3.9 1.8 18A2 2 0 0 0 3.5 21h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>${s.c}</span></div><div class="pep-ask"><b>Ask your doctor:</b> "${s.q}"</div>`;
+    REPORT.stacks.push({n:s.n,recipe:s.recipe,status:(s.s==='ap'?'FDA-approved':s.s==='rv'?'Under FDA review':'Not approved'),e:s.e,caution:s.c,ask:s.q,pin:pin});el.appendChild(d);});
+  // unmatched curious terms → noted for the doctor
+  const known=[...PEPTIDES.map(p=>p.n.toLowerCase()),...PEPTIDES.map(p=>(p.a||'').toLowerCase()),...STACKS.map(s=>s.n.toLowerCase()),...STACKS.map(s=>s.n.replace(/"/g,'').toLowerCase())];
+  const unmatched=[...S.curious].filter(x=>!known.includes(x.toLowerCase()));
+  REPORT.curiousUnmatched=unmatched;
+  $('curiousNote').innerHTML=unmatched.length?`<div class="pep-note good" style="margin-top:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="10"/></svg><span>You also asked about: <b>${unmatched.join(', ')}</b>. We don\u2019t have a library entry for ${unmatched.length>1?'these':'that'} — ${unmatched.length>1?'they\u2019re':'it\u2019s'} noted on your sheet so your doctor can weigh in.</span></div>`:'';
+}
+
+function buildQuestions(){const el=$('questions');el.innerHTML='';
+  const qs=['Of everything I\u2019ve been reading about, which actually has human evidence behind it?','Which of these are legally prescribable right now, and which are not?','Given my specific health history, what would you steer me away from entirely?'];
+  if(S.goals.has('fatloss'))qs.push('Am I a candidate for an FDA-approved GLP-1 before considering anything experimental?');
+  if(has('mtc')||otherHas('medullary thyroid'))qs.push('Given my thyroid-cancer/MEN2 history, are GLP-1 medications off the table for me?');
+  if(has('cancer'))qs.push('How does my cancer history change what\u2019s safe with IGF-1-raising compounds?');
+  if(anyAutoimmune()||med('biologic'))qs.push('Can my specialists coordinate on whether any immune-modulating compound is safe with my current treatment?');
+  if(has('eatingdisorder'))qs.push('How do we approach my body-composition goals in a way that\u2019s safe given my history?');
+  if(med('glp1'))qs.push('How do we optimize my current GLP-1 rather than add experimental compounds?');
+  if(S.goals.has('joint'))qs.push('For joint/tendon goals, what are the established options versus the hyped peptides?');
+  if(S.medsFree.trim()||S.otherConditions.size)qs.push('Here is my full history &amp; medication list — any interaction or contraindication concerns?');
+  qs.push('What baseline bloodwork would you want before we discuss any of this further?');
+  REPORT.questions=qs.slice();
+  qs.forEach(q=>{const li=document.createElement('li');li.innerHTML=`<span class="qm">?</span><span>${q}</span>`;el.appendChild(li);});}
+
+function buildLabs(){const el=$('labs');el.innerHTML='';const L=[['IGF-1','GH axis'],['HbA1c','blood sugar'],['Fasting insulin','metabolic'],['hs-CRP','inflammation'],['Lipid panel','cardiovascular'],['CBC','blood counts'],['CMP','kidney & liver']];
+  if(has('thyroid')||has('mtc'))L.push(['TSH / Free T4','thyroid']);if(has('mtc'))L.push(['Calcitonin','per your doctor']);if(has('cancer'))L.push(['Onco markers','per your oncologist']);
+  L.forEach(([n,d])=>{const t=document.createElement('div');t.className='lab';t.innerHTML=`<b>${n}</b>${d}`;el.appendChild(t);});REPORT.labs=L.slice();}
+
+function buildSponsored(){const m=[];
+  if(has('cancer')||has('thyroid')||has('dm')||has('pituitary')||has('mtc')||S.goals.has('muscle')||S.goals.has('longevity'))m.push('IGF-1');
+  if(has('dm')||has('pcos')||S.goals.has('fatloss'))m.push('HbA1c','fasting insulin');
+  if(anyAutoimmune())m.push('hs-CRP');
+  if(has('cvd')||has('htn'))m.push('a lipid panel');
+  const u=[...new Set(m)].slice(0,3),hook=$('relHook'),pl=$('panelLine');
+  if(u.length){const list=u.length===1?u[0]:u.slice(0,-1).join(', ')+' and '+u[u.length-1];
+    hook.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span>Your briefing references ${list}. The Baseline Panel includes ${u.length>1?'them all':'it'}.</span>`;
+    hook.classList.add('show');
+    pl.textContent=`Includes ${list} plus a full metabolic baseline — the markers a clinician commonly reviews before any of these pathways.`;
+  }else{hook.classList.remove('show');}
+  $('cgmCard').style.display=(S.goals.has('fatloss')||has('dm')||has('pcos'))?'block':'none';
+}
+
+/* ============ PERSONALIZED VOICE (bottom line + principles) ============ */
+function primaryGoal(){for(const g of GOALS){if(S.goals.has(g.id))return g.id;}return '';}
+const GOAL_LINE={
+ fatloss:"For fat loss, the only compounds with both strong human evidence and legal status are the approved GLP-1 medications \u2014 most everything else marketed for fat loss is unproven or failed in trials.",
+ muscle:"For muscle and recovery, growth-hormone peptides raise IGF-1 on thin human data; consistent training, protein, and sleep outperform them for most people.",
+ joint:"For joint and tendon repair, the popular peptides (BPC-157, TB-500) rest on animal data with essentially no human trials, and aren\u2019t legally compoundable right now.",
+ cognition:"For cognitive focus, peptide evidence is minimal \u2014 sleep, exercise, and ruling out underlying causes with a doctor are the higher-yield moves.",
+ sleep:"For sleep, peptide evidence is thin and carries IGF-1 considerations; sleep consistency and screening for apnea matter far more.",
+ skin:"For skin, GHK-Cu has some legitimacy as a topical; injectable peptide use is unproven versus evidence-based dermatology.",
+ longevity:"For longevity, most peptides are research-only with no credible human evidence; the proven levers are metabolic health, exercise, and sleep.",
+ energy:"For energy and fatigue, peptides are speculative; the higher-yield path is ruling out underlying causes \u2014 thyroid, sleep, labs \u2014 with a doctor."
+};
+function riskSentence(){
+ if(has('cancer')||has('mtc')||otherHas('medullary thyroid'))return "Given your history, the single most important thing to be cautious about is anything that raises IGF-1.";
+ if(has('pituitary')||otherHas('acromegaly','pituitary','growth hormone'))return "With your growth-hormone-axis history, any GH-affecting compound has to run through your endocrinologist first.";
+ if(anyAutoimmune()||med('biologic')||med('steroid'))return "With your immune history, immune-modulating peptides need your whole care team \u2014 not solo experimentation.";
+ if(has('eatingdisorder'))return "Given your history, body-composition goals are safest approached with a clinician who can keep them from tipping into harmful patterns.";
+ if(has('thyroid'))return "With your thyroid history, IGF-1-raising compounds deserve extra scrutiny.";
+ if(med('glp1'))return "Since you\u2019re already on a GLP-1, the productive move is optimizing that approved therapy, not stacking experimental compounds on top.";
+ if(has('dm')||has('pcos'))return "With your metabolic history, the approved GLP-1 path is usually the more rational route than experimental peptides.";
+ return "";
+}
+function foundationLine(){
+ let base='';const names=labelList(S.conditions,CONDITIONS).filter(x=>x!=='None of the above');
+ if(names.length)base=', plus keeping your '+(names.length===1?names[0].toLowerCase():names.slice(0,2).map(x=>x.toLowerCase()).join(' and '))+' well-managed';
+ const g=primaryGoal();
+ const fund=(g==='sleep')?'sleep consistency, training, and less alcohol':(g==='longevity')?'exercise, sleep, and metabolic health':'training, protein, sleep, and less alcohol';
+ return "The highest-yield moves aren\u2019t peptides at all \u2014 "+fund+base+". Build that first.";
+}
+function buildBottomLine(){const g=primaryGoal();const parts=[];
+ if(g&&GOAL_LINE[g])parts.push(GOAL_LINE[g]);
+ const rs=riskSentence();if(rs)parts.push(rs);
+ if(!parts.length)parts.push("Most peptides marketed for your goals carry thin evidence or unsettled legal status \u2014 the honest move is an informed conversation with a clinician before anything else.");
+ REPORT.bottomLine=parts.join(' ');REPORT.foundation=foundationLine();
+ $('bottomline').innerHTML=`<div class="bh"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Your honest bottom line</div><p>${REPORT.bottomLine}</p>`;
+}
+const PRINCIPLES=[
+ {t:'Approved-and-prescribed beats gray-market — every time.',d:'If your goal can be met with an FDA-approved medication, that\u2019s the starting point, not a research-chemical website.',hot:()=>S.goals.has('fatloss')||has('dm')||has('pcos')||med('glp1')},
+ {t:'Anything that raises IGF-1 deserves scrutiny.',d:'Growth-hormone peptides are a careful conversation given any history of cancer, thyroid, or growth disorders.',hot:()=>has('cancer')||has('thyroid')||has('pituitary')||has('mtc')||has('dm')},
+ {t:'Immune-modulating peptides need your whole care team.',d:'With an autoimmune condition or immunosuppressants, these require cross-specialty coordination \u2014 not solo experimentation.',hot:()=>anyAutoimmune()||med('biologic')||med('steroid')},
+ {t:'No dosing or sourcing from strangers.',d:'A licensed clinician monitoring you, or nothing. Internet protocols and unregulated vials are where people get hurt.',hot:()=>S.prior.has('selfsource')}
+];
+function buildPrinciples(){const el=$('principles');el.innerHTML='';REPORT.principles=[];
+ PRINCIPLES.forEach((p,i)=>{const hot=p.hot();REPORT.principles.push({t:p.t,d:p.d,hot:hot});
+  const d=document.createElement('div');d.className='principle'+(hot?' hot':'');
+  d.innerHTML=`<div class="pn">${i+1}</div><div><div class="pt">${p.t}${hot?'<span class="you">For you</span>':''}</div><div class="pd">${p.d}</div></div>`;
+  el.appendChild(d);});
+ $('foundation').innerHTML=`<b>${REPORT.foundation}</b>`;
+}
+
+/* ============ PDF (programmatic jsPDF — reliable every time) ============ */
+function pdfName(){return ($('pname')&&$('pname').value.trim())||'';}
+function labelList(set,arr){return [...set].map(id=>{const o=arr.find(x=>x.id===id);return o?o.l:id;});}
+function generatePDF(){
+  if(!window.jspdf){alert('PDF library still loading — try again in a second.');return;}
+  if(!REPORT.flags){alert('Generate your briefing first.');return;}
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'pt',format:'letter'});
+  const PW=doc.internal.pageSize.getWidth(),PH=doc.internal.pageSize.getHeight();
+  const M=56,CW=PW-M*2;let y=64;
+  const ACCENT=[10,138,114],INK=[29,29,31],INK2=[110,110,115],RED=[179,38,30],AMBER=[168,103,17];
+  const ensure=s=>{if(y+s>PH-70){doc.addPage();y=72;}};
+  const h2=t=>{ensure(40);y+=14;doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...ACCENT);doc.text(t.toUpperCase(),M,y);y+=6;doc.setDrawColor(225,228,228);doc.line(M,y,M+CW,y);y+=15;};
+  const body=(t,o)=>{o=o||{};doc.setFont('helvetica',o.bold?'bold':'normal');doc.setFontSize(o.size||11);doc.setTextColor(...(o.color||INK2));doc.splitTextToSize(t,CW).forEach(ln=>{ensure(15);doc.text(ln,M,y);y+=14.5;});};
+  const bullet=t=>{doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(...INK2);doc.splitTextToSize(t,CW-16).forEach((ln,i)=>{ensure(15);if(i===0){doc.setTextColor(...ACCENT);doc.text('\u2022',M,y);doc.setTextColor(...INK2);}doc.text(ln,M+16,y);y+=14.5;});y+=3;};
+
+  doc.setFillColor(...ACCENT);doc.rect(0,0,PW,8,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(...ACCENT);doc.text('PEPTIDEDECIDE \u00b7 DOCTOR-READY DOSSIER',M,y);y+=24;
+  doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(...INK);doc.text('Appointment Prep Summary',M,y);y+=20;
+  const nm=pdfName(),today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(...INK2);doc.text((nm?'Prepared for '+nm+'   \u2022   ':'')+today,M,y);
+
+  h2('Snapshot');
+  body('Age: '+($('age').value||'\u2014'),{color:INK});
+  body('Approx BMI: '+(S.bmi?S.bmi.toFixed(1):'\u2014'),{color:INK});
+  body('Goals: '+(labelList(S.goals,GOALS).join(', ')||'\u2014'),{color:INK});
+  const conds=labelList(S.conditions,CONDITIONS).filter(x=>x!=='None of the above').concat([...S.otherConditions]).join(', ')||'none reported';
+  body('Health history: '+conds,{color:INK});
+  if(deepened&&!med('nonemed')&&S.meds.size)body('Current med groups: '+labelList(S.meds,MEDS).join(', '),{color:INK});
+  if(S.medsFree.trim())body('Also noted for my doctor: '+S.medsFree.trim(),{color:INK});
+
+  h2('My honest bottom line');
+  body(REPORT.bottomLine||'',{color:INK});
+
+  h2('Caution flags from my history');
+  REPORT.flags.forEach(f=>{const c=f.lv==='high'?RED:f.lv==='med'?AMBER:ACCENT,lab=f.lv==='high'?'[HIGH PRIORITY] ':f.lv==='med'?'[DISCUSS] ':'[NOTE] ';
+    ensure(18);doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(...c);doc.splitTextToSize(lab+f.t,CW).forEach(ln=>{ensure(15);doc.text(ln,M,y);y+=14.5;});body(f.b);y+=4;});
+
+  h2('Compounds I am asking about');
+  REPORT.peps.forEach(p=>{ensure(18);doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(...INK);doc.text(p.n+(p.pin?'  (I asked about this)':'')+'  \u2014  '+p.status+', '+p.e+' evidence',M,y);y+=14.5;if(p.warn)body(p.warn,{color:RED});body('Ask: '+p.ask,{color:INK2});y+=4;});
+
+  if(REPORT.stacks&&REPORT.stacks.length){h2('Stacks I may hear about');
+    REPORT.stacks.forEach(s=>{ensure(18);doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(...INK);doc.text(s.n.replace(/"/g,'')+(s.pin?'  (I asked about this)':'')+'  \u2014  '+s.status,M,y);y+=14.5;body(s.recipe,{color:INK2});body(s.caution,{color:RED});body('Ask: '+s.ask,{color:INK2});y+=4;});}
+  if(REPORT.curiousUnmatched&&REPORT.curiousUnmatched.length){ensure(16);body('Also noted for my doctor (no library entry): '+REPORT.curiousUnmatched.join(', '),{color:INK});}
+
+  h2('Questions for my doctor');
+  (REPORT.questions||[]).forEach(q=>bullet(q.replace(/&amp;/g,'&')));
+
+  h2('Baseline labs to consider');
+  body((REPORT.labs||[]).map(l=>l[0]).join('   \u2022   '),{color:INK});
+
+  h2('The rules that apply to me');
+  (REPORT.principles||[]).forEach(p=>bullet(p.t+(p.hot?'  (most relevant to me)':'')));
+
+  h2('Foundation first');
+  body(REPORT.foundation||'',{color:INK});
+
+  const pages=doc.internal.getNumberOfPages();
+  for(let p=1;p<=pages;p++){doc.setPage(p);doc.setDrawColor(235,235,238);doc.line(M,PH-52,PW-M,PH-52);doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(...INK2);
+    let fy=PH-42;doc.splitTextToSize('Educational use only \u2014 not medical advice, a prescription, or a diagnosis. Generated by PeptideDecide to prepare the patient for a conversation with a licensed clinician, who makes all treatment decisions.',CW).forEach(ln=>{doc.text(ln,M,fy);fy+=10;});
+    doc.setFont('helvetica','normal');doc.text('Page '+p+' of '+pages,PW-M,PH-14,{align:'right'});}
+  doc.save('PeptideDecide-Doctor-Prep.pdf');
+}
+
+/* ============ PAYWALL & TOGGLE ============ */
+function buyCheck(){$('buy').disabled=!($('email').value.includes('@')&&$('cCollect').checked);}
+$('email').addEventListener('input',buyCheck);$('cCollect').addEventListener('change',buyCheck);
+$('buy').onclick=()=>{generatePDF();showPostBuy();$('buy').textContent='\u2713 Purchased (prototype \u2014 no charge)';$('buy').disabled=true;};
+$('redown').onclick=()=>generatePDF();
+function rndToken(n){const c='abcdefghijkmnpqrstuvwxyz23456789';let s='';for(let i=0;i<n;i++)s+=c[Math.floor(Math.random()*c.length)];return s;}
+function showPostBuy(){
+  const token=rndToken(22),exp=new Date(Date.now()+14*864e5).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const link='https://peptidedecide.com/d/'+token;
+  const goal=(GOALS.find(g=>g.id===primaryGoal())||{}).l||'my goals';
+  const nm=pdfName();
+  const txt='Ahead of our consult, I used PeptideDecide to prepare. My doctor-ready briefing — my health context, caution flags, the questions I want to cover, and suggested baseline labs — is here:\n'+link+'\n(secure link, expires '+exp+')\n\nIn short: my focus is '+goal.toLowerCase()+', and I understand many options here are unproven or not FDA-approved, so I want to talk through what is actually evidence-based and appropriate for me'+(nm?', '+nm:'')+'.';
+  $('shareText').value=txt;
+  $('shareMeta').innerHTML='Link: <b>'+link.replace('https://','')+'</b> \u00b7 expires '+exp;
+  $('postbuy').classList.add('show');
+  $('postbuy').scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('copyShare').onclick=()=>{const t=$('shareText');t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}$('copyShare').textContent='\u2713 Copied';setTimeout(()=>$('copyShare').textContent='Copy briefing + link',1800);};
+$('bview').onclick=function(){document.body.classList.toggle('bon');this.classList.toggle('on');};
+show(0);
 </script>
 </body>
 </html>
